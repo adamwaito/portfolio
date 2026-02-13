@@ -1,7 +1,9 @@
 backend:
-  name: github
+  name: git-gateway
   repo: adamwaito/portfolio
   branch: main
+
+local_backend: true
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
