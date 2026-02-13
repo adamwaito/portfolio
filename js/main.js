@@ -62,7 +62,8 @@ function parseFrontmatter(content) {
 
 async function loadCMSProjects() {
   try {
-    const apiUrl = `https://api.github.com/repos/${CMS_REPO}/contents/content/projects`;
+    const cacheBuster = `v=${Date.now()}`;
+    const apiUrl = `https://api.github.com/repos/${CMS_REPO}/contents/content/projects?ref=${CMS_BRANCH}&${cacheBuster}`;
     const response = await fetch(apiUrl);
     if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
 
@@ -75,7 +76,7 @@ async function loadCMSProjects() {
 
     for (const file of markdownFiles) {
       try {
-        const rawUrl = `https://raw.githubusercontent.com/${CMS_REPO}/${CMS_BRANCH}/content/projects/${file}`;
+        const rawUrl = `https://raw.githubusercontent.com/${CMS_REPO}/${CMS_BRANCH}/content/projects/${file}?${cacheBuster}`;
         const projectResponse = await fetch(rawUrl);
         if (!projectResponse.ok) throw new Error(`Raw fetch error: ${projectResponse.status}`);
 
