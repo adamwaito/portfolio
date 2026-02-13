@@ -1,0 +1,21 @@
+backend:
+  name: github
+  repo: adamwaito/portfolio
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Category/Keywords", name: "categories", widget: "string", hint: "Space-separated, e.g.: illustration layout animation" }
+      - { label: "Thumbnail Image", name: "thumbnail", widget: "image", allow_multiple: false }
+      - { label: "Gallery Images", name: "gallery", widget: "list", field: { label: "Image", name: "image", widget: "image" } }
+

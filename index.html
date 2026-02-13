@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adam Waito — Portfolio</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+NZ+Basic:wght@100..400&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- HEADER / NAV -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="logo">Adam Waito Visual Endeavors</div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h2>Illustration, Design, 2D Layout and Animation, Web Development etc.</h2>
+    </div>
+  </section>
+
+  
+  <!-- PORTFOLIO GRID -->
+  <section class="portfolio">
+    <div class="container" id="work">
+      <h3 class="section-title">Projects</h3>
+    </div>
+    <!-- FILTER BUTTONS -->
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">ALL</button>
+      <button class="filter-btn" data-filter="animation">Animation/Motion</button>
+      <button class="filter-btn" data-filter="layout">2D Layout/Backgrounds</button>
+      <button class="filter-btn" data-filter="illustration-comics">Illustration/Comics</button>
+      <button class="filter-btn" data-filter="web">Web</button>
+      <button class="filter-btn" data-filter="other">OTHER</button>
+    </div>
+
+    <div class="container">
+      <div class="grid">
+        <article class="project" data-category="layout illustration-comics">
+          <div class="project-image">
+            <img src="images/placeholder.jpg" alt="The Great Canadian Baking Show">
+          </div>
+          <div class="project-info">
+            <h4>The Great Canadian Baking Show</h4>
+            <p>CBC Television</p>
+          </div>
+        </article>
+
+        <article class="project" data-category="layout">
+          <div class="project-image">
+            <img src="images/wordsville2.webp" alt="Wordsville">
+          </div>
+          <div class="project-info">
+            <h4>Wordsville</h4>
+            <p>TVOKids</p>
+          </div>
+        </article>
+
+        <article class="project" data-category="layout">
+          <div class="project-image">
+            <img src="images/placeholder3.jpg" alt="Dino Dex">
+          </div>
+          <div class="project-info">
+            <h4>Dino Dex</h4>
+            <p>TVOKids</p>
+          </div>
+        </article>
+
+        <article class="project" data-category="layout">
+          <div class="project-image">
+            <img src="images/armadillo1.jpg" alt="Armadillo Avalanche">
+          </div>
+          <div class="project-info">
+            <h4>Armadillo Avalanche</h4>
+            <p>Marble Media</p>
+          </div>
+        </article>
+
+           <article class="project" data-category="layout">
+          <div class="project-image">
+            <img src="images/housebrokenthumbnail.jpg" alt="Housebroken">
+          </div>
+          <div class="project-info">
+            <h4>Housebroken</h4>
+            <p>Fox</p>
+          </div>
+        </article>
+
+        <article class="project" data-category="layout animation">
+          <div class="project-image">
+            <img src="images/placeholder.jpg" alt="Sample CMS Project">
+          </div>
+          <div class="project-info">
+            <h4>Sample CMS Project</h4>
+            <p>Test project</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="container">
+      <h3 class="section-title">About</h3>
+    </div>
+    <div class="about-content">
+      <div class="about-text">
+        <p>Adam Waito (he/him) is a multidisciplinary artist based in the west end of Toronto with over a decade of experience as a professional Illustrator and Graphic Designer and nearly a decade in the animation industry as a 2D Background Artist, Layout Supervisor, and occasional Animator.</p>
+        <br>
+        <p>Always looking for new creative challenges, Adam has more recently taken on Web Development and Design (see: this website). In a past life, he was a pretty busy Montreal-based musician touring internationally in struggling indie rock bands, and he still releases and performs music under the moniker Sparkling Water.</p>
+      </div>
+      <div class="about-image">
+        <img src="images/adamphoto1.jpg" alt="Adam Waito">
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <div class="contact-intro">
+    <h3 class="contact-title">Contact</h3>
+    <p class="contact-description">
+      I'm always excited to take on new projects, challenges, and collaborations. Fill out the form below and I'll get back to you as soon as possible :)
+    </p>
+  </div>
+
+  <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+
+    <input type="hidden" name="access_key" value="5f02da35-7c17-4a05-b52a-cabd25c27657" />
+    <input type="hidden" name="subject" value="New Contact Form Submission from Web3Forms" />
+    <input type="hidden" name="from_name" value="My Website" />
+    <!-- More custom ization options available in the docs: https://docs.web3forms.com -->
+
+    <div class="form-group-container">
+      <div class="form-group">
+        <label for="name" class="form-label">Name</label>
+        <input id="name" name="name" class="form-input" placeholder="Your name" type="text" />
+      </div>
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" name="email" class="form-input" placeholder="Your email" type="email" />
+      </div>
+      <div class="form-group">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-textarea" id="message" name="message" placeholder="Your message"></textarea>
+      </div>
+    </div>
+    <button class="form-submit" type="submit">Send Message</button>
+  </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Adam Waito</p>
+    </div>
+  </footer>
+
+  <!-- PROJECT MODAL -->
+  <div id="project-modal">
+    <div class="modal-content">
+      <button class="close">×</button>
+      <button class="prev">◀</button>
+      <button class="next">▶</button>
+      <h4 id="modal-title"></h4>
+      <img id="modal-image" src="" alt="Project Image" />
+      <p id="modal-description"></p>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>
