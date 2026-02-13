@@ -31,8 +31,10 @@ function parseFrontmatter(content) {
       const [itemKey, ...itemValueParts] = item.split(':');
       const itemValue = itemValueParts.join(':').trim();
 
-      if (itemKey === 'image') {
-        data[currentListKey] = data[currentListKey] || [];
+      data[currentListKey] = data[currentListKey] || [];
+      if (itemValueParts.length === 0) {
+        data[currentListKey].push(itemKey.trim());
+      } else if (itemKey === 'image') {
         data[currentListKey].push(itemValue);
       }
       return;
