@@ -16,7 +16,8 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Short Description", name: "short_description", widget: "string", hint: "Brief text for project card" }
+      - { label: "Full Description", name: "description", widget: "text", hint: "Detailed text for modal gallery" }
       - { label: "Category/Keywords", name: "categories", widget: "string", hint: "Space-separated, e.g.: illustration layout animation" }
       - { label: "Thumbnail Image", name: "thumbnail", widget: "image", allow_multiple: false }
       - { label: "Gallery Images", name: "gallery", widget: "list", field: { label: "Image", name: "image", widget: "image" } }
