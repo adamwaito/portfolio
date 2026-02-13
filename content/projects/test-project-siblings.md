@@ -1,6 +1,6 @@
 ---
 title: Vice Magazine
-short_description: insert sunglasses guy emoji here
+short_description: insert sunglasses guy emoji
 description: Here is a small selection of illustrations I made for Vice over the years.
 categories: illustration-comics
 thumbnail: /images/uploads/vice6.webp
