@@ -144,9 +144,9 @@ function renderProjects(projectData, grid) {
 document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.querySelector('.grid');
 
-  // Try loading from CMS, fallback to hardcoded data
+  // Load CMS projects and merge with hardcoded data
   const cmsProjects = await loadCMSProjects();
-  const projectData = cmsProjects || {
+  const fallbackProjects = {
     "The Great Canadian Baking Show": {
       description: "Here are a few of the illustrations of competitors' bakes that I worked on that were featured on Season 8 of The Great Canadian Baking Show for CBC Television.",
       categories: "layout illustration-comics",
@@ -179,13 +179,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
+  const projectData = { ...fallbackProjects, ...cmsProjects };
   renderProjects(projectData, grid);
 
   // ------------------------
   // FILTER PROJECTS
   // ------------------------
   const buttons = document.querySelectorAll(".filter-btn");
-  const projects = document.querySelectorAll(".project");
+  let projects = document.querySelectorAll(".project");
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -194,6 +195,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
+      projects = document.querySelectorAll(".project");
       projects.forEach(project => {
         const cats = project.dataset.category;
         project.style.display = (filter === "all" || cats.includes(filter)) ? "" : "none";
@@ -215,9 +217,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentImages = [];
   let currentIndex = 0;
 
-  // Open modal on project click
-  projects.forEach(project => {
-    project.addEventListener('click', () => {
+  // Open modal on project click using event delegation
+  grid.addEventListener('click', (e) => {
+    const project = e.target.closest('.project');
+    if (!project) return;
+
+    const clickHandler = () => {
       const title = project.querySelector('h4').textContent;
       const data = projectData[title];
       if (!data) return;
@@ -248,7 +253,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         modalImage.src = ''; // Clear src so broken image icon doesn't show
         modal.classList.add('show'); // Show modal anyway
       };
-    });
+    };
+    clickHandler();
   });
 
   // ------------------------
