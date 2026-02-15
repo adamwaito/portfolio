@@ -1,7 +1,8 @@
 console.log('Portfolio loaded');
 
-const CMS_REPO = 'adamwaito/portfolio';
-const CMS_BRANCH = 'main';
+// PocketBase API URL (change to your hosted URL when migrating to production)
+const POCKETBASE_URL = 'http://127.0.0.1:8090';
+const API_URL = `${POCKETBASE_URL}/api/collections/projects/records`;
 
 function normalizeCategories(value) {
   if (!value) return '';
@@ -64,49 +65,35 @@ function parseFrontmatter(content) {
 
 async function loadCMSProjects() {
   try {
-    const cacheBuster = `v=${Date.now()}`;
-    const apiUrl = `https://api.github.com/repos/${CMS_REPO}/contents/content/projects?ref=${CMS_BRANCH}&${cacheBuster}`;
-    const response = await fetch(apiUrl);
-    if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error(`PocketBase API error: ${response.status}`);
 
-    const files = await response.json();
-    const markdownFiles = files
-      .filter(file => file.type === 'file' && file.name.endsWith('.md'))
-      .map(file => file.name);
-
+    const data = await response.json();
     const projects = {};
 
-    for (const file of markdownFiles) {
-      try {
-        const rawUrl = `https://raw.githubusercontent.com/${CMS_REPO}/${CMS_BRANCH}/content/projects/${file}?${cacheBuster}`;
-        const projectResponse = await fetch(rawUrl);
-        if (!projectResponse.ok) throw new Error(`Raw fetch error: ${projectResponse.status}`);
+    data.items.forEach(record => {
+      const thumbnail = record.thumbnail
+        ? `${POCKETBASE_URL}/api/files/projects/${record.id}/${record.thumbnail}`
+        : '/images/placeholder.jpg';
 
-        const projectContent = await projectResponse.text();
-        const { data } = parseFrontmatter(projectContent);
+      const images = (record.gallery || [])
+        .map(file => `${POCKETBASE_URL}/api/files/projects/${record.id}/${file}`);
 
-        const images = Array.isArray(data.gallery)
-          ? data.gallery
-          : (data.gallery ? data.gallery.split(',').map(img => img.trim()) : []);
-
-        projects[data.title] = {
-          short_description: data.short_description || '',
-          description: data.description || '',
-          categories: normalizeCategories(data.categories),
-          thumbnail: data.thumbnail || images[0] || '/images/placeholder.jpg',
-          images: images.length ? images : (data.thumbnail ? [data.thumbnail] : [])
-        };
-      } catch (e) {
-        console.warn(`Failed to load project ${file}:`, e);
-      }
-    }
+      projects[record.title] = {
+        short_description: record.short_description || '',
+        description: record.description || '',
+        categories: normalizeCategories(record.categories),
+        thumbnail: thumbnail,
+        images: images.length ? images : (thumbnail ? [thumbnail] : [])
+      };
+    });
 
     return Object.keys(projects).length ? projects : null;
   } catch (e) {
-    console.warn('Failed to load CMS projects, using fallback data:', e);
+    console.warn('Failed to load PocketBase projects, using fallback data:', e);
     return null;
   }
-}
+}}
 
 function renderProjects(projectData, grid) {
   const entries = Object.entries(projectData);
