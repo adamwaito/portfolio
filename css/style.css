@@ -32,7 +32,10 @@ img { width: 100%; display: block; }
    TYPE SCALE
 ------------------------- */
 
-html { font-size: 16px; }
+html { 
+  font-size: 16px; 
+  overflow-x: hidden;
+}
 
 body {
   font-size: 1rem;
@@ -40,6 +43,7 @@ body {
   font-weight: 400;
   color: #111;
   text-align: left;
+  overflow-x: hidden;
 }
 
 h1 { font-size: 3rem; line-height: 1.25; letter-spacing: .05em; }
@@ -294,6 +298,7 @@ section { padding: var(--space-xs) 0; }
   pointer-events: none;
   transition: opacity 0.4s ease;
   z-index: 100;
+  overflow: hidden;
 }
 
 #project-modal.show {
@@ -316,6 +321,7 @@ section { padding: var(--space-xs) 0; }
   border-radius: 8px;
   transform: scale(0.95);
   transition: transform 0.3s ease;
+  overflow-x: hidden;
 }
 
 #project-modal.show .modal-content {
@@ -338,6 +344,16 @@ section { padding: var(--space-xs) 0; }
 #modal-image.show-image {
   opacity: 1;
   transform: translateX(0);
+}
+
+#modal-caption {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  max-width: 90%;
+  min-height: 1.2em;
 }
 
 .close, .prev, .next {

@@ -47,9 +47,10 @@
     <!-- FILTER BUTTONS -->
     <div class="filters">
       <button class="filter-btn active" data-filter="all">ALL</button>
+      <button class="filter-btn" data-filter="illustration-comics">Illustration/Comics</button>
       <button class="filter-btn" data-filter="animation">Animation/Motion</button>
       <button class="filter-btn" data-filter="layout">2D Layout/Backgrounds</button>
-      <button class="filter-btn" data-filter="illustration-comics">Illustration/Comics</button>
+      <button class="filter-btn" data-filter="3D">3D</button>
       <button class="filter-btn" data-filter="web">Web</button>
       <button class="filter-btn" data-filter="other">OTHER</button>
     </div>
@@ -106,13 +107,23 @@
           </div>
         </article>
 
-        <article class="project" data-category="layout animation">
+        <article class="project" data-category="layout illustration-comics">
           <div class="project-image">
-            <img src="images/placeholder.jpg" alt="Sample CMS Project">
+            <img src="images/placeholder.jpg" alt="Jeremy and Jazzy">
           </div>
           <div class="project-info">
-            <h4>Sample CMS Project</h4>
-            <p>Test project</p>
+            <h4>Jeremy and Jazzy</h4>
+            <p>CBC Television</p>
+          </div>
+        </article>
+
+          <article class="project" data-category="layout 3D">
+          <div class="project-image">
+            <img src="images/placeholder.jpg" alt="PSI COPS">
+          </div>
+          <div class="project-info">
+            <h4>PSI COPS</h4>
+            <p>Adult Swim</p>
           </div>
         </article>
       </div>
@@ -187,6 +198,7 @@
       <button class="next">▶</button>
       <h4 id="modal-title"></h4>
       <img id="modal-image" src="" alt="Project Image" />
+      <p id="modal-caption"></p>
       <p id="modal-description"></p>
     </div>
   </div>

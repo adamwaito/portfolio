@@ -79,12 +79,18 @@ async function loadCMSProjects() {
       const images = (record.gallery || [])
         .map(file => `${POCKETBASE_URL}/api/files/projects/${record.id}/${file}`);
 
+      const captions = (record.gallery_captions || '')
+        .split('\n')
+        .map(cap => cap.trim())
+        .filter(Boolean);
+
       projects[record.title] = {
         short_description: record.short_description || '',
         description: record.description || '',
         categories: normalizeCategories(record.categories),
         thumbnail: thumbnail,
-        images: images.length ? images : (thumbnail ? [thumbnail] : [])
+        images: images.length ? images : (thumbnail ? [thumbnail] : []),
+        captions: captions
       };
     });
 
@@ -93,7 +99,7 @@ async function loadCMSProjects() {
     console.warn('Failed to load PocketBase projects, using fallback data:', e);
     return null;
   }
-}}
+}
 
 function renderProjects(projectData, grid) {
   const entries = Object.entries(projectData);
@@ -206,11 +212,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modalTitle = document.getElementById('modal-title');
   const modalDescription = document.getElementById('modal-description');
   const modalImage = document.getElementById('modal-image');
+  const modalCaption = document.getElementById('modal-caption');
   const closeBtn = document.querySelector('.close');
   const prevBtn = document.querySelector('.prev');
   const nextBtn = document.querySelector('.next');
 
   let currentImages = [];
+  let currentCaptions = [];
   let currentIndex = 0;
 
   // Open modal on project click using event delegation
@@ -227,10 +235,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       modalDescription.textContent = data.description;
 
       currentImages = data.images && data.images.length ? data.images : [data.thumbnail].filter(Boolean);
+      currentCaptions = data.captions || [];
       if (!currentImages.length) {
         currentImages = ['images/placeholder.jpg'];
       }
       currentIndex = 0;
+
+      // Update caption for current image
+      modalCaption.textContent = currentCaptions[currentIndex] || '';
 
       // Preload first image before showing modal
       const firstImg = new Image();
@@ -258,6 +270,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ------------------------
   function showImage(index, direction = 1) {
     currentIndex = index;
+    
+    // Update caption for current image
+    modalCaption.textContent = currentCaptions[currentIndex] || '';
 
     modalImage.classList.remove('show-image');
 
