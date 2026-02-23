@@ -13,6 +13,13 @@ function normalizeCategories(value) {
     .join(' ');
 }
 
+// Detect if a file is a video based on extension
+function isVideoFile(filename) {
+  const videoExtensions = ['.mp4', '.webm', '.mov', '.avi', '.mkv'];
+  const ext = filename.toLowerCase().substring(filename.lastIndexOf('.'));
+  return videoExtensions.includes(ext);
+}
+
 // Parse a limited YAML frontmatter shape used by this project.
 function parseFrontmatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
@@ -211,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modal = document.getElementById('project-modal');
   const modalTitle = document.getElementById('modal-title');
   const modalDescription = document.getElementById('modal-description');
-  const modalImage = document.getElementById('modal-image');
+  const modalMedia = document.getElementById('modal-media');
   const modalCaption = document.getElementById('modal-caption');
   const closeBtn = document.querySelector('.close');
   const prevBtn = document.querySelector('.prev');
@@ -220,6 +227,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentImages = [];
   let currentCaptions = [];
   let currentIndex = 0;
+  let currentMediaElement = null;
 
   // Open modal on project click using event delegation
   grid.addEventListener('click', (e) => {
@@ -241,65 +249,89 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       currentIndex = 0;
 
-      // Update caption for current image
-      modalCaption.textContent = currentCaptions[currentIndex] || '';
-
-      // Preload first image before showing modal
-      const firstImg = new Image();
-      firstImg.src = currentImages[0];
-      firstImg.onload = () => {
-        modalImage.src = firstImg.src;
-        // Reset styles and add show-image class with proper animation
-        modalImage.style.transition = 'none';
-        modalImage.style.opacity = '1';
-        modalImage.style.transform = 'translateX(0)';
-        modalImage.classList.add('show-image');
-        modal.classList.add('show');
-      };
-      firstImg.onerror = () => {
-        console.error(`Failed to load image: ${currentImages[0]}`);
-        modalImage.src = ''; // Clear src so broken image icon doesn't show
-        modal.classList.add('show'); // Show modal anyway
-      };
+      // Load and display first media
+      showImage(0, 1, true);
     };
     clickHandler();
   });
 
   // ------------------------
-  // SHOW IMAGE WITH FADE/SLIDE
+  // SHOW IMAGE/VIDEO WITH FADE/SLIDE
   // ------------------------
-  function showImage(index, direction = 1) {
+  function showImage(index, direction = 1, isFirstLoad = false) {
     currentIndex = index;
     
-    // Update caption for current image
+    // Update caption
     modalCaption.textContent = currentCaptions[currentIndex] || '';
 
-    modalImage.classList.remove('show-image');
+    const mediaPath = currentImages[index];
+    const isVideo = isVideoFile(mediaPath);
 
-    // preload new image
-    const newImg = new Image();
-    newImg.src = currentImages[index];
+    // Remove old media element
+    if (currentMediaElement) {
+      currentMediaElement.classList.remove('show-image');
+    }
+
+    // Create new media element (img or video)
+    const mediaElement = isVideo ? document.createElement('video') : document.createElement('img');
+    mediaElement.src = mediaPath;
+    mediaElement.alt = 'Project Media';
+    mediaElement.className = 'modal-media-element';
     
-    const loadImage = () => {
-      modalImage.style.transition = 'none';
-      modalImage.style.transform = `translateX(${direction * 20}px)`;
-      modalImage.style.opacity = '0';
-      modalImage.src = newImg.src;
+    if (isVideo) {
+      mediaElement.controls = true;
+      mediaElement.style.width = '100%';
+      mediaElement.style.maxHeight = '70vh';
+      mediaElement.style.objectFit = 'contain';
+    } else {
+      mediaElement.style.width = '100%';
+      mediaElement.style.maxHeight = '70vh';
+      mediaElement.style.objectFit = 'contain';
+    }
 
+    // Set up animation styles
+    mediaElement.style.opacity = '0';
+    mediaElement.style.transform = `translateX(${direction * 20}px)`;
+    mediaElement.style.transition = 'none';
+
+    const loadMedia = () => {
+      // Clear old media and add new one
+      modalMedia.innerHTML = '';
+      modalMedia.appendChild(mediaElement);
+
+      // Trigger animation
       requestAnimationFrame(() => {
-        modalImage.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        // Clear inline styles to let CSS class rules take over
-        modalImage.style.transform = '';
-        modalImage.style.opacity = '';
-        modalImage.classList.add('show-image');
+        mediaElement.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        mediaElement.style.opacity = '1';
+        mediaElement.style.transform = 'translateX(0)';
+        mediaElement.classList.add('show-image');
       });
+
+      // Show modal if first load
+      if (isFirstLoad) {
+        modal.classList.add('show');
+      }
     };
-    
-    newImg.onload = loadImage;
-    newImg.onerror = () => {
-      console.error(`Failed to load image: ${currentImages[index]}`);
-      loadImage(); // Show placeholder/previous image anyway
-    };
+
+    if (isVideo) {
+      // Videos load asynchronously; use canplay event
+      mediaElement.addEventListener('canplay', loadMedia, { once: true });
+      mediaElement.addEventListener('error', () => {
+        console.error(`Failed to load video: ${mediaPath}`);
+        loadMedia(); // Show anyway
+      });
+    } else {
+      // Images use onload
+      const img = new Image();
+      img.src = mediaPath;
+      img.onload = loadMedia;
+      img.onerror = () => {
+        console.error(`Failed to load image: ${mediaPath}`);
+        loadMedia(); // Show anyway
+      };
+    }
+
+    currentMediaElement = mediaElement;
   }
 
   // ------------------------

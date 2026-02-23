@@ -329,22 +329,27 @@ section { padding: var(--space-xs) 0; }
 }
 
 #modal-title { margin-bottom: 1rem; }
-#modal-description { margin-bottom: 1rem; text-align: left; }
 
-#modal-image {
+#modal-media {
   width: 100%;
-  max-height: 70vh;
-  object-fit: contain;
-  opacity: 0;
-  transform: translateX(20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 1.5rem;
 }
 
-#modal-image.show-image {
+.modal-media-element {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.modal-media-element.show-image {
   opacity: 1;
   transform: translateX(0);
 }
+
+#modal-description { margin-bottom: 1rem; text-align: left; }
 
 #modal-caption {
   font-size: 0.75rem;

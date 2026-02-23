@@ -29,7 +29,7 @@ In Admin UI:
 | `description` | Text | No | Modal description |
 | `categories` | Text | No | Space-separated (e.g. "animation layout") |
 | `thumbnail` | File | No | Single image |
-| `gallery` | Files | No | Multiple images (allow up to 10) |
+| `gallery` | Files | No | Images and videos (images: jpg, png, webp; videos: mp4, webm, mov, avi, mkv) |
 | `gallery_captions` | Text | No | Captions for gallery images (one per line) |
 
 4) Save collection
