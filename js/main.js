@@ -1,7 +1,7 @@
 console.log('Portfolio loaded');
 
 // PocketBase API URL (change to your hosted URL when migrating to production)
-const POCKETBASE_URL = 'http://127.0.0.1:8090';
+const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
 const API_URL = `${POCKETBASE_URL}/api/collections/projects/records`;
 
 function normalizeCategories(value) {
@@ -14,10 +14,49 @@ function normalizeCategories(value) {
 }
 
 // Detect if a file is a video based on extension
-function isVideoFile(filename) {
+function isVideoFile(filenameOrPath) {
+  if (!filenameOrPath) return false;
+  // Handle both strings and objects
+  const filename = typeof filenameOrPath === 'string' ? filenameOrPath : (filenameOrPath.filename || filenameOrPath.src || '');
+  if (!filename) return false;
   const videoExtensions = ['.mp4', '.webm', '.mov', '.avi', '.mkv'];
   const ext = filename.toLowerCase().substring(filename.lastIndexOf('.'));
   return videoExtensions.includes(ext);
+}
+
+// Parse YouTube/Vimeo URLs and return embed code
+function parseVideoUrl(url) {
+  // Try YouTube long form: youtube.com/watch?v=...
+  let match = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
+  if (match) {
+    return {
+      type: 'youtube',
+      id: match[1],
+      embed: `https://www.youtube.com/embed/${match[1]}`
+    };
+  }
+
+  // Try YouTube short form: youtu.be/... (handles query params)
+  match = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  if (match) {
+    return {
+      type: 'youtube',
+      id: match[1],
+      embed: `https://www.youtube.com/embed/${match[1]}`
+    };
+  }
+
+  // Try Vimeo
+  match = url.match(/vimeo\.com\/(\d+)/);
+  if (match) {
+    return {
+      type: 'vimeo',
+      id: match[1],
+      embed: `https://player.vimeo.com/video/${match[1]}`
+    };
+  }
+
+  return null;
 }
 
 // Parse a limited YAML frontmatter shape used by this project.
@@ -72,7 +111,8 @@ function parseFrontmatter(content) {
 
 async function loadCMSProjects() {
   try {
-    const response = await fetch(API_URL);
+    // Fetch with sort by sort_order field (ascending)
+    const response = await fetch(`${API_URL}?sort=sort_order`);
     if (!response.ok) throw new Error(`PocketBase API error: ${response.status}`);
 
     const data = await response.json();
@@ -84,7 +124,25 @@ async function loadCMSProjects() {
         : '/images/placeholder.jpg';
 
       const images = (record.gallery || [])
-        .map(file => `${POCKETBASE_URL}/api/files/projects/${record.id}/${file}`);
+        .map(file => ({
+          type: 'file',
+          src: `${POCKETBASE_URL}/api/files/projects/${record.id}/${file}`,
+          filename: file
+        }));
+
+      // Parse video links
+      const videoLinks = (record.video_links || '')
+        .split('\n')
+        .map(link => link.trim())
+        .filter(Boolean)
+        .map(link => {
+          const parsed = parseVideoUrl(link);
+          return parsed ? { type: 'embed', ...parsed } : null;
+        })
+        .filter(Boolean);
+
+      // Merge images and embedded videos
+      const allMedia = [...images, ...videoLinks];
 
       const captions = (record.gallery_captions || '')
         .split('\n')
@@ -96,7 +154,7 @@ async function loadCMSProjects() {
         description: record.description || '',
         categories: normalizeCategories(record.categories),
         thumbnail: thumbnail,
-        images: images.length ? images : (thumbnail ? [thumbnail] : []),
+        images: allMedia.length ? allMedia : (thumbnail ? [{type: 'file', src: thumbnail, filename: 'thumbnail'}] : []),
         captions: captions
       };
     });
@@ -188,7 +246,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  const projectData = { ...fallbackProjects, ...cmsProjects };
+  const projectData = cmsProjects || fallbackProjects;
   renderProjects(projectData, grid);
 
   // ------------------------
@@ -199,7 +257,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-      const filter = btn.dataset.filter;
+      const filter = btn.dataset.filter.toLowerCase();
 
       buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
@@ -264,30 +322,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Update caption
     modalCaption.textContent = currentCaptions[currentIndex] || '';
 
-    const mediaPath = currentImages[index];
-    const isVideo = isVideoFile(mediaPath);
+    const mediaItem = currentImages[index];
+    
+    // Normalize mediaItem to always be an object
+    const mediaObj = typeof mediaItem === 'string' 
+      ? { type: 'file', src: mediaItem, filename: mediaItem }
+      : mediaItem;
+    
+    // Check if it's an embed by looking for embed property
+    const isEmbed = !!(mediaObj.embed);
+    const mediaPath = mediaObj.src || mediaObj.embed || mediaItem;
+    const isVideo = !isEmbed && isVideoFile(mediaPath);
 
     // Remove old media element
     if (currentMediaElement) {
       currentMediaElement.classList.remove('show-image');
     }
 
-    // Create new media element (img or video)
-    const mediaElement = isVideo ? document.createElement('video') : document.createElement('img');
-    mediaElement.src = mediaPath;
-    mediaElement.alt = 'Project Media';
-    mediaElement.className = 'modal-media-element';
-    
-    if (isVideo) {
-      mediaElement.controls = true;
-      mediaElement.style.width = '100%';
-      mediaElement.style.maxHeight = '70vh';
-      mediaElement.style.objectFit = 'contain';
+    // Create new media element (iframe, video, or img)
+    let mediaElement;
+    if (isEmbed) {
+      mediaElement = document.createElement('iframe');
+      mediaElement.src = mediaObj.embed;
+      mediaElement.frameborder = '0';
+      mediaElement.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      mediaElement.allowFullscreen = true;
+      mediaElement.width = '100%';
+      mediaElement.height = '400';
     } else {
+      mediaElement = isVideo ? document.createElement('video') : document.createElement('img');
+      mediaElement.src = mediaPath;
+      mediaElement.alt = 'Project Media';
+      if (isVideo) {
+        mediaElement.controls = true;
+      }
       mediaElement.style.width = '100%';
       mediaElement.style.maxHeight = '70vh';
       mediaElement.style.objectFit = 'contain';
     }
+    
+    mediaElement.className = 'modal-media-element';
 
     // Set up animation styles
     mediaElement.style.opacity = '0';
@@ -313,7 +387,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     };
 
-    if (isVideo) {
+    if (isEmbed) {
+      // Embedded iframes load immediately
+      loadMedia();
+    } else if (isVideo) {
       // Videos load asynchronously; use canplay event
       mediaElement.addEventListener('canplay', loadMedia, { once: true });
       mediaElement.addEventListener('error', () => {
@@ -366,7 +443,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ------------------------
   function closeModal() {
     modal.classList.remove('show');
-    modalImage.classList.remove('show-image');
+    if (currentMediaElement) {
+      currentMediaElement.classList.remove('show-image');
+    }
   }
 
   closeBtn.addEventListener('click', closeModal);
@@ -380,11 +459,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   let touchStartX = 0;
   let touchEndX = 0;
 
-  modalImage.addEventListener('touchstart', (e) => {
+  modalMedia.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
-  });
+  }, { passive: true });
 
-  modalImage.addEventListener('touchend', (e) => {
+  modalMedia.addEventListener('touchend', (e) => {
     touchEndX = e.changedTouches[0].screenX;
     const swipeThreshold = 50;
 
@@ -395,7 +474,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const prevIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
       showImage(prevIndex, -1);
     }
-  });
+  }, { passive: true });
 
   // ------------------------
   // SCROLL "WORK" LINK TO FILTERS
