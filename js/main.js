@@ -3,6 +3,19 @@ console.log('Portfolio loaded');
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
 const API_URL = `${POCKETBASE_URL}/api/collections/projects/records`;
+const GRID_THUMB_SIZE = '600x600';
+
+function withPocketBaseThumb(fileUrl, thumbSize = GRID_THUMB_SIZE) {
+  if (!fileUrl || !thumbSize || !fileUrl.includes('/api/files/')) return fileUrl;
+
+  try {
+    const url = new URL(fileUrl);
+    url.searchParams.set('thumb', thumbSize);
+    return url.toString();
+  } catch (_) {
+    return fileUrl;
+  }
+}
 
 function normalizeCategories(value) {
   if (!value) return '';
@@ -219,6 +232,8 @@ async function loadCMSProjects() {
         ? `${POCKETBASE_URL}/api/files/projects/${record.id}/${record.thumbnail}`
         : '/images/placeholder.jpg';
 
+      const thumbnailThumb = withPocketBaseThumb(thumbnail);
+
       const images = (record.gallery || [])
         .map(file => ({
           type: 'file',
@@ -250,6 +265,7 @@ async function loadCMSProjects() {
         description: record.description || '',
         categories: normalizeCategories(record.categories),
         thumbnail: thumbnail,
+        thumbnailThumb: thumbnailThumb,
         images: allMedia.length ? allMedia : (thumbnail ? [{type: 'file', src: thumbnail, filename: 'thumbnail'}] : []),
         captions: captions
       };
@@ -276,8 +292,17 @@ function renderProjects(projectData, grid) {
     imageWrap.className = 'project-image';
 
     const img = document.createElement('img');
-    img.src = data.thumbnail || 'images/placeholder.jpg';
+    const fullThumbnail = data.thumbnail || 'images/placeholder.jpg';
+    const gridThumbnail = data.thumbnailThumb || fullThumbnail;
+    img.src = gridThumbnail;
     img.alt = title;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.addEventListener('error', () => {
+      if (img.src !== fullThumbnail) {
+        img.src = fullThumbnail;
+      }
+    }, { once: true });
     imageWrap.appendChild(img);
 
     const info = document.createElement('div');
