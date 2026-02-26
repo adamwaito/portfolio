@@ -1,5 +1,7 @@
 console.log('Portfolio loaded');
 
+// Build version: 2026-02-26 (script cache key: v=20260226)
+
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
 const API_URL = `${POCKETBASE_URL}/api/collections/projects/records`;
@@ -271,10 +273,16 @@ async function loadCMSProjects() {
       };
     });
 
-    return Object.keys(projects).length ? projects : null;
+    return {
+      projects: Object.keys(projects).length ? projects : null,
+      error: null
+    };
   } catch (e) {
     console.warn('Failed to load PocketBase projects, using fallback data:', e);
-    return null;
+    return {
+      projects: null,
+      error: e
+    };
   }
 }
 
@@ -326,9 +334,22 @@ function renderProjects(projectData, grid) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.querySelector('.grid');
+  const projectsStatus = document.getElementById('projects-status');
+
+  const showProjectsStatus = (message) => {
+    if (!projectsStatus) return;
+    projectsStatus.textContent = message;
+    projectsStatus.hidden = false;
+  };
+
+  const hideProjectsStatus = () => {
+    if (!projectsStatus) return;
+    projectsStatus.textContent = '';
+    projectsStatus.hidden = true;
+  };
 
   // Load CMS projects and merge with hardcoded data
-  const cmsProjects = await loadCMSProjects();
+  const { projects: cmsProjects, error: cmsError } = await loadCMSProjects();
   const fallbackProjects = {
     "The Great Canadian Baking Show": {
       short_description: "CBC Television",
@@ -368,6 +389,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   const projectData = cmsProjects || fallbackProjects;
+  if (!cmsProjects && cmsError) {
+    showProjectsStatus('Latest projects are temporarily unavailable. Showing backup items.');
+  } else {
+    hideProjectsStatus();
+  }
+
   renderProjects(projectData, grid);
 
   // ------------------------
