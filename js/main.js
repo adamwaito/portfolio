@@ -59,6 +59,102 @@ function parseVideoUrl(url) {
   return null;
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function sanitizeHref(url) {
+  if (!url) return null;
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+
+  const withProtocol = /^(https?:\/\/|mailto:)/i.test(trimmed)
+    ? trimmed
+    : (/^www\./i.test(trimmed) ? `https://${trimmed}` : null);
+
+  if (!withProtocol) return null;
+
+  try {
+    const parsed = new URL(withProtocol);
+    const protocol = parsed.protocol.toLowerCase();
+    if (protocol !== 'http:' && protocol !== 'https:' && protocol !== 'mailto:') {
+      return null;
+    }
+    return parsed.href;
+  } catch (_) {
+    return null;
+  }
+}
+
+function formatDescriptionToHtml(text) {
+  const raw = text || '';
+  const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const segments = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = markdownLinkRegex.exec(raw)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({ type: 'text', value: raw.slice(lastIndex, match.index) });
+    }
+
+    segments.push({ type: 'mdlink', label: match[1], href: match[2] });
+    lastIndex = markdownLinkRegex.lastIndex;
+  }
+
+  if (lastIndex < raw.length) {
+    segments.push({ type: 'text', value: raw.slice(lastIndex) });
+  }
+
+  const urlRegex = /((?:https?:\/\/|www\.)[^\s<]+)/gi;
+  const htmlParts = [];
+
+  segments.forEach(segment => {
+    if (segment.type === 'mdlink') {
+      const safeHref = sanitizeHref(segment.href);
+      const label = escapeHtml(segment.label || segment.href);
+      if (safeHref) {
+        htmlParts.push(`<a href="${escapeHtml(safeHref)}" target="_blank" rel="noopener noreferrer">${label}</a>`);
+      } else {
+        htmlParts.push(escapeHtml(`[${segment.label}](${segment.href})`));
+      }
+      return;
+    }
+
+    const textSegment = segment.value;
+    let textLastIndex = 0;
+    let urlMatch;
+
+    while ((urlMatch = urlRegex.exec(textSegment)) !== null) {
+      if (urlMatch.index > textLastIndex) {
+        htmlParts.push(escapeHtml(textSegment.slice(textLastIndex, urlMatch.index)));
+      }
+
+      const visible = urlMatch[0];
+      const safeHref = sanitizeHref(visible);
+      if (safeHref) {
+        htmlParts.push(`<a href="${escapeHtml(safeHref)}" target="_blank" rel="noopener noreferrer">${escapeHtml(visible)}</a>`);
+      } else {
+        htmlParts.push(escapeHtml(visible));
+      }
+      textLastIndex = urlRegex.lastIndex;
+    }
+
+    if (textLastIndex < textSegment.length) {
+      htmlParts.push(escapeHtml(textSegment.slice(textLastIndex)));
+    }
+
+    urlRegex.lastIndex = 0;
+  });
+
+  return htmlParts.join('').replace(/\r?\n/g, '<br>');
+}
+
 // Parse a limited YAML frontmatter shape used by this project.
 function parseFrontmatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
@@ -298,7 +394,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!data) return;
 
       modalTitle.textContent = title;
-      modalDescription.textContent = data.description;
+      modalDescription.innerHTML = formatDescriptionToHtml(data.description);
 
       currentImages = data.images && data.images.length ? data.images : [data.thumbnail].filter(Boolean);
       currentCaptions = data.captions || [];
