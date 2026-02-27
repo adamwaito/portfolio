@@ -1,6 +1,6 @@
 console.log('Portfolio loaded');
 
-// Build version: 2026-02-27 (script cache key: v=20260227d)
+// Build version: 2026-02-27 (script cache key: v=20260227f)
 
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
@@ -231,14 +231,26 @@ async function loadCMSProjects() {
       throw new Error('Simulated project load failure');
     }
 
-    // Fetch with sort by sort_order field (ascending)
-    const response = await fetch(`${API_URL}?sort=sort_order`);
-    if (!response.ok) throw new Error(`PocketBase API error: ${response.status}`);
+    // Fetch all pages with sort by sort_order field (ascending)
+    const allItems = [];
+    const perPage = 100;
+    let page = 1;
+    let totalPages = 1;
 
-    const data = await response.json();
+    while (page <= totalPages) {
+      const response = await fetch(`${API_URL}?sort=sort_order&page=${page}&perPage=${perPage}`);
+      if (!response.ok) throw new Error(`PocketBase API error: ${response.status}`);
+
+      const data = await response.json();
+      const items = Array.isArray(data.items) ? data.items : [];
+      allItems.push(...items);
+      totalPages = Number(data.totalPages) || 1;
+      page += 1;
+    }
+
     const projects = {};
 
-    data.items.forEach(record => {
+    allItems.forEach(record => {
       const thumbnail = record.thumbnail
         ? `${POCKETBASE_URL}/api/files/projects/${record.id}/${record.thumbnail}`
         : '/images/placeholder.jpg';
@@ -346,21 +358,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.querySelector('.grid');
   const projectsStatus = document.getElementById('projects-status');
 
-  const showProjectsStatus = (message) => {
+  const showProjectsStatus = (message, isLoading = false) => {
     if (!projectsStatus) return;
     projectsStatus.textContent = message;
+    projectsStatus.classList.toggle('is-loading', isLoading);
     projectsStatus.hidden = false;
   };
 
   const hideProjectsStatus = () => {
     if (!projectsStatus) return;
     projectsStatus.textContent = '';
+    projectsStatus.classList.remove('is-loading');
     projectsStatus.hidden = true;
   };
 
   // Load CMS projects
   let projectData = {};
-  showProjectsStatus('Loading projects...');
+  showProjectsStatus('Loading projects', true);
 
   try {
     const firstAttempt = await loadCMSProjects();
