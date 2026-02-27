@@ -1,6 +1,6 @@
 console.log('Portfolio loaded');
 
-// Build version: 2026-02-26 (script cache key: v=20260226)
+// Build version: 2026-02-27 (script cache key: v=20260227b)
 
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
@@ -288,9 +288,10 @@ async function loadCMSProjects() {
 
 function renderProjects(projectData, grid) {
   const entries = Object.entries(projectData);
-  if (!grid || !entries.length) return;
-
+  if (!grid) return;
   grid.innerHTML = '';
+  if (!entries.length) return;
+
   entries.forEach(([title, data]) => {
     const article = document.createElement('article');
     article.className = 'project';
@@ -348,54 +349,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     projectsStatus.hidden = true;
   };
 
-  // Load CMS projects and merge with hardcoded data
-  const { projects: cmsProjects, error: cmsError } = await loadCMSProjects();
-  const fallbackProjects = {
-    "The Great Canadian Baking Show": {
-      short_description: "CBC Television",
-      description: "Here are a few of the illustrations of competitors' bakes that I worked on that were featured on Season 8 of The Great Canadian Baking Show for CBC Television.",
-      categories: "layout illustration-comics",
-      thumbnail: "images/placeholder.jpg",
-      images: ["images/bakingshow1.webp", "images/bakingshow2.webp", "images/bakingshow3.webp", "images/bakingshow4.webp", "images/bakingshow5.webp", "images/bakingshow6.webp"]
-    },
-    "Wordsville": {
-      short_description: "TVOKids",
-      description: "I had the pleasure of acting as Layout Supervisor, Location Designer, and Background Artist on Wordsville for TVOKids. Here are some of the backgrounds I created for the show.",
-      categories: "layout",
-      thumbnail: "images/wordsville2.webp",
-      images: ["images/wordsville1.webp", "images/wordsville2.webp", "images/wordsville3.webp", "images/wordsville4.webp"]
-    },
-    "Dino Dex": {
-      short_description: "TVOKids",
-      description: "Being Layout Arist/Background Painter on Dino Dex for TVOKids was fun because I got to develop two very distinct styles for the episodes, 'Dino World' and 'Dino Bodies.'",
-      categories: "layout",
-      thumbnail: "images/placeholder3.jpg",
-      images: ["images/dinodex1.webp", "images/dinodex2.webp", "images/dinodex3.webp", "images/dinobodies1.webp", "images/dinobodies2.webp", "images/dinobodies3.webp", "images/dinobodies4.webp"]
-    },
-    "Armadillo Avalanche": {
-      short_description: "Marble Media",
-      description: "It was a real pleasure and privilege to work as Layout Supervisor and Background Artist on Armadillo Avalanche, a series of digital shorts for Marble Media.",
-      categories: "layout",
-      thumbnail: "images/armadillo1.jpg",
-      images: ["images/armadillo1.jpg", "images/armadillo2.webp", "images/armadillo3.webp", "images/armadillo4.webp", "images/armadillo5.webp", "images/armadillo6.webp"]
-    },
-    "Housebroken": {
-      short_description: "Fox",
-      description: "In a coproduction between Smiley Guy (TO) and Bento Box (LA) I was Assistant Layout Supervisor and Background Artist on Housebroken for Fox.",
-      categories: "layout",
-      thumbnail: "images/housebrokenthumbnail.jpg",
-      images: ["images/housebroken1.webp", "images/housebroken2.webp", "images/housebroken3.webp"]
-    }
-  };
+  // Load CMS projects
+  let projectData = {};
 
-  const projectData = cmsProjects || fallbackProjects;
-  if (!cmsProjects && cmsError) {
-    showProjectsStatus('Latest projects are temporarily unavailable. Showing backup items.');
-  } else {
-    hideProjectsStatus();
+  try {
+    const { projects: cmsProjects, error: cmsError } = await loadCMSProjects();
+    const hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
+
+    if (hasCMSProjects) {
+      projectData = cmsProjects;
+      hideProjectsStatus();
+    } else {
+      if (cmsError) {
+        console.warn('PocketBase unavailable, showing warning state:', cmsError);
+      }
+      showProjectsStatus('Projects are temporarily unavailable. Please check back soon.');
+    }
+  } catch (e) {
+    console.error('Unexpected project loading error, showing warning state:', e);
+    showProjectsStatus('Projects are temporarily unavailable. Please check back soon.');
   }
 
   renderProjects(projectData, grid);
+
+  if (grid && !grid.querySelector('.project')) {
+    showProjectsStatus('Projects are temporarily unavailable. Please check back soon.');
+  }
 
   // ------------------------
   // FILTER PROJECTS
