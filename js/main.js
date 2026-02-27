@@ -1,12 +1,16 @@
 console.log('Portfolio loaded');
 
-// Build version: 2026-02-27 (script cache key: v=20260227c)
+// Build version: 2026-02-27 (script cache key: v=20260227d)
 
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
 const API_URL = `${POCKETBASE_URL}/api/collections/projects/records`;
 const GRID_THUMB_SIZE = '600x600';
 const SHOULD_SIMULATE_PROJECTS_FAILURE = new URLSearchParams(window.location.search).get('simulateProjectsFailure') === '1';
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function withPocketBaseThumb(fileUrl, thumbSize = GRID_THUMB_SIZE) {
   if (!fileUrl || !thumbSize || !fileUrl.includes('/api/files/')) return fileUrl;
@@ -356,10 +360,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Load CMS projects
   let projectData = {};
+  showProjectsStatus('Loading projects...');
 
   try {
-    const { projects: cmsProjects, error: cmsError } = await loadCMSProjects();
-    const hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
+    const firstAttempt = await loadCMSProjects();
+    let cmsProjects = firstAttempt.projects;
+    let cmsError = firstAttempt.error;
+    let hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
+
+    if (!hasCMSProjects) {
+      await delay(2000);
+      const secondAttempt = await loadCMSProjects();
+      cmsProjects = secondAttempt.projects;
+      cmsError = secondAttempt.error || cmsError;
+      hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
+    }
 
     if (hasCMSProjects) {
       projectData = cmsProjects;
