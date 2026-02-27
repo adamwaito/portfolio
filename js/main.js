@@ -368,17 +368,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (cmsError) {
         console.warn('PocketBase unavailable, showing warning state:', cmsError);
       }
-      showProjectsStatus('Projects are temporarily unavailable. Please check back soon.');
+      showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.');
     }
   } catch (e) {
     console.error('Unexpected project loading error, showing warning state:', e);
-    showProjectsStatus('Projects are temporarily unavailable. Please check back soon.');
+    showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.');
   }
 
   renderProjects(projectData, grid);
 
   if (grid && !grid.querySelector('.project')) {
-    showProjectsStatus('Projects are temporarily unavailable. Please check back soon.');
+    showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.');
   }
 
   // ------------------------
