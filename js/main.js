@@ -1,11 +1,12 @@
 console.log('Portfolio loaded');
 
-// Build version: 2026-02-27 (script cache key: v=20260227b)
+// Build version: 2026-02-27 (script cache key: v=20260227c)
 
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
 const API_URL = `${POCKETBASE_URL}/api/collections/projects/records`;
 const GRID_THUMB_SIZE = '600x600';
+const SHOULD_SIMULATE_PROJECTS_FAILURE = new URLSearchParams(window.location.search).get('simulateProjectsFailure') === '1';
 
 function withPocketBaseThumb(fileUrl, thumbSize = GRID_THUMB_SIZE) {
   if (!fileUrl || !thumbSize || !fileUrl.includes('/api/files/')) return fileUrl;
@@ -222,6 +223,10 @@ function parseFrontmatter(content) {
 
 async function loadCMSProjects() {
   try {
+    if (SHOULD_SIMULATE_PROJECTS_FAILURE) {
+      throw new Error('Simulated project load failure');
+    }
+
     // Fetch with sort by sort_order field (ascending)
     const response = await fetch(`${API_URL}?sort=sort_order`);
     if (!response.ok) throw new Error(`PocketBase API error: ${response.status}`);
