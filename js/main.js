@@ -1,6 +1,6 @@
 console.log('Portfolio loaded');
 
-// Build version: 2026-02-27 (script cache key: v=20260227h)
+// Build version: 2026-02-27 (script cache key: v=20260227i)
 
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
@@ -8,11 +8,6 @@ const API_URL = `${POCKETBASE_URL}/api/collections/projects/records`;
 const GRID_THUMB_SIZE = '600x600';
 const SHOULD_SIMULATE_PROJECTS_FAILURE = new URLSearchParams(window.location.search).get('simulateProjectsFailure') === '1';
 const CMS_FETCH_TIMEOUT_MS = 6000;
-const CMS_RETRY_DELAY_MS = 600;
-
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 async function fetchWithTimeout(url, timeoutMs = CMS_FETCH_TIMEOUT_MS) {
   const controller = new AbortController();
@@ -317,7 +312,7 @@ async function loadCMSProjects() {
       error: null
     };
   } catch (e) {
-    console.warn('Failed to load PocketBase projects, using fallback data:', e);
+    console.warn('Failed to load PocketBase projects:', e);
     return {
       projects: null,
       error: e
@@ -376,12 +371,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.querySelector('.grid');
   const projectsStatus = document.getElementById('projects-status');
   const projectsRetry = document.getElementById('projects-retry');
+  let isProjectLoadInProgress = false;
 
   const showProjectsStatus = (message, isLoading = false, showRetry = false) => {
-    if (!projectsStatus) return;
-    projectsStatus.textContent = message;
-    projectsStatus.classList.toggle('is-loading', isLoading);
-    projectsStatus.hidden = false;
+    if (projectsStatus) {
+      projectsStatus.textContent = message;
+      projectsStatus.classList.toggle('is-loading', isLoading);
+      projectsStatus.hidden = false;
+    }
 
     if (projectsRetry) {
       projectsRetry.hidden = !showRetry;
@@ -390,10 +387,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   const hideProjectsStatus = () => {
-    if (!projectsStatus) return;
-    projectsStatus.textContent = '';
-    projectsStatus.classList.remove('is-loading');
-    projectsStatus.hidden = true;
+    if (projectsStatus) {
+      projectsStatus.textContent = '';
+      projectsStatus.classList.remove('is-loading');
+      projectsStatus.hidden = true;
+    }
 
     if (projectsRetry) {
       projectsRetry.hidden = true;
@@ -404,40 +402,38 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Load CMS projects
   let projectData = {};
   const loadAndRenderProjects = async () => {
+    if (isProjectLoadInProgress) {
+      return;
+    }
+
+    isProjectLoadInProgress = true;
     showProjectsStatus('Loading projects', true);
 
     try {
       const firstAttempt = await loadCMSProjects();
-      let cmsProjects = firstAttempt.projects;
-      let cmsError = firstAttempt.error;
-      let hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
-
-      if (!hasCMSProjects) {
-        await delay(CMS_RETRY_DELAY_MS);
-        const secondAttempt = await loadCMSProjects();
-        cmsProjects = secondAttempt.projects;
-        cmsError = secondAttempt.error || cmsError;
-        hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
-      }
+      const cmsProjects = firstAttempt.projects;
+      const cmsError = firstAttempt.error;
+      const hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
 
       if (hasCMSProjects) {
         projectData = cmsProjects;
+        renderProjects(projectData, grid);
         hideProjectsStatus();
       } else {
+        projectData = {};
+        renderProjects(projectData, grid);
         if (cmsError) {
           console.warn('PocketBase unavailable, showing warning state:', cmsError);
         }
-        showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.', false, true);
+        showProjectsStatus('Projects are temporarily unavailable. Please try again.', false, true);
       }
     } catch (e) {
+      projectData = {};
+      renderProjects(projectData, grid);
       console.error('Unexpected project loading error, showing warning state:', e);
-      showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.', false, true);
-    }
-
-    renderProjects(projectData, grid);
-
-    if (grid && !grid.querySelector('.project')) {
-      showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.', false, true);
+      showProjectsStatus('Projects are temporarily unavailable. Please try again.', false, true);
+    } finally {
+      isProjectLoadInProgress = false;
     }
   };
 
