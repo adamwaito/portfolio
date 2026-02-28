@@ -104,6 +104,11 @@ p { font-size: .875rem; max-width: 65ch; letter-spacing: 0.02em; }
   text-transform: uppercase;
 }
 
+.projects-status[hidden],
+.projects-retry[hidden] {
+  display: none;
+}
+
 .projects-retry:disabled {
   opacity: 0.6;
   cursor: default;

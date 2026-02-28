@@ -1,6 +1,6 @@
 console.log('Portfolio loaded');
 
-// Build version: 2026-02-27 (script cache key: v=20260227i)
+// Build version: 2026-02-27 (script cache key: v=20260227j)
 
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
