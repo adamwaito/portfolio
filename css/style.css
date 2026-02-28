@@ -92,6 +92,23 @@ p { font-size: .875rem; max-width: 65ch; letter-spacing: 0.02em; }
   text-transform: uppercase;
 }
 
+.projects-retry {
+  display: block;
+  margin: 0 auto var(--space-sm);
+  background: none;
+  border: 1px solid currentColor;
+  padding: .4rem .8rem;
+  cursor: pointer;
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.projects-retry:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 .projects-status.is-loading::after {
   content: '';
   display: inline-block;

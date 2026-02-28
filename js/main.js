@@ -1,15 +1,33 @@
 console.log('Portfolio loaded');
 
-// Build version: 2026-02-27 (script cache key: v=20260227f)
+// Build version: 2026-02-27 (script cache key: v=20260227h)
 
 // PocketBase API URL (change to your hosted URL when migrating to production)
 const POCKETBASE_URL = 'https://api.adamwaitoiscool.com';
 const API_URL = `${POCKETBASE_URL}/api/collections/projects/records`;
 const GRID_THUMB_SIZE = '600x600';
 const SHOULD_SIMULATE_PROJECTS_FAILURE = new URLSearchParams(window.location.search).get('simulateProjectsFailure') === '1';
+const CMS_FETCH_TIMEOUT_MS = 6000;
+const CMS_RETRY_DELAY_MS = 600;
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchWithTimeout(url, timeoutMs = CMS_FETCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, { signal: controller.signal });
+  } catch (error) {
+    if (error && error.name === 'AbortError') {
+      throw new Error(`PocketBase request timed out after ${timeoutMs}ms`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 function withPocketBaseThumb(fileUrl, thumbSize = GRID_THUMB_SIZE) {
@@ -238,7 +256,7 @@ async function loadCMSProjects() {
     let totalPages = 1;
 
     while (page <= totalPages) {
-      const response = await fetch(`${API_URL}?sort=sort_order&page=${page}&perPage=${perPage}`);
+      const response = await fetchWithTimeout(`${API_URL}?sort=sort_order&page=${page}&perPage=${perPage}`);
       if (!response.ok) throw new Error(`PocketBase API error: ${response.status}`);
 
       const data = await response.json();
@@ -357,12 +375,18 @@ function renderProjects(projectData, grid) {
 document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.querySelector('.grid');
   const projectsStatus = document.getElementById('projects-status');
+  const projectsRetry = document.getElementById('projects-retry');
 
-  const showProjectsStatus = (message, isLoading = false) => {
+  const showProjectsStatus = (message, isLoading = false, showRetry = false) => {
     if (!projectsStatus) return;
     projectsStatus.textContent = message;
     projectsStatus.classList.toggle('is-loading', isLoading);
     projectsStatus.hidden = false;
+
+    if (projectsRetry) {
+      projectsRetry.hidden = !showRetry;
+      projectsRetry.disabled = isLoading;
+    }
   };
 
   const hideProjectsStatus = () => {
@@ -370,45 +394,60 @@ document.addEventListener("DOMContentLoaded", async () => {
     projectsStatus.textContent = '';
     projectsStatus.classList.remove('is-loading');
     projectsStatus.hidden = true;
+
+    if (projectsRetry) {
+      projectsRetry.hidden = true;
+      projectsRetry.disabled = false;
+    }
   };
 
   // Load CMS projects
   let projectData = {};
-  showProjectsStatus('Loading projects', true);
+  const loadAndRenderProjects = async () => {
+    showProjectsStatus('Loading projects', true);
 
-  try {
-    const firstAttempt = await loadCMSProjects();
-    let cmsProjects = firstAttempt.projects;
-    let cmsError = firstAttempt.error;
-    let hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
+    try {
+      const firstAttempt = await loadCMSProjects();
+      let cmsProjects = firstAttempt.projects;
+      let cmsError = firstAttempt.error;
+      let hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
 
-    if (!hasCMSProjects) {
-      await delay(2000);
-      const secondAttempt = await loadCMSProjects();
-      cmsProjects = secondAttempt.projects;
-      cmsError = secondAttempt.error || cmsError;
-      hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
-    }
-
-    if (hasCMSProjects) {
-      projectData = cmsProjects;
-      hideProjectsStatus();
-    } else {
-      if (cmsError) {
-        console.warn('PocketBase unavailable, showing warning state:', cmsError);
+      if (!hasCMSProjects) {
+        await delay(CMS_RETRY_DELAY_MS);
+        const secondAttempt = await loadCMSProjects();
+        cmsProjects = secondAttempt.projects;
+        cmsError = secondAttempt.error || cmsError;
+        hasCMSProjects = !!(cmsProjects && Object.keys(cmsProjects).length);
       }
-      showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.');
+
+      if (hasCMSProjects) {
+        projectData = cmsProjects;
+        hideProjectsStatus();
+      } else {
+        if (cmsError) {
+          console.warn('PocketBase unavailable, showing warning state:', cmsError);
+        }
+        showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.', false, true);
+      }
+    } catch (e) {
+      console.error('Unexpected project loading error, showing warning state:', e);
+      showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.', false, true);
     }
-  } catch (e) {
-    console.error('Unexpected project loading error, showing warning state:', e);
-    showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.');
+
+    renderProjects(projectData, grid);
+
+    if (grid && !grid.querySelector('.project')) {
+      showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.', false, true);
+    }
+  };
+
+  if (projectsRetry) {
+    projectsRetry.addEventListener('click', () => {
+      loadAndRenderProjects();
+    });
   }
 
-  renderProjects(projectData, grid);
-
-  if (grid && !grid.querySelector('.project')) {
-    showProjectsStatus('Projects are temporarily unavailable. Please refresh your browser or check back soon.');
-  }
+  await loadAndRenderProjects();
 
   // ------------------------
   // FILTER PROJECTS
