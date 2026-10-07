@@ -36,6 +36,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const ILLUST_OPSZ_END = 1000;
   const ILLUST_WGHT_START = 1000;
   const ILLUST_WGHT_END = 100;
+  const ILLUST_SPACING_MAX = 0.7; // em; capped lower when the spread-out word wouldn't fit
+  let illustSpacingMax = ILLUST_SPACING_MAX;
+
+  // Largest letter-spacing at which the fully scrubbed title still fits its box.
+  const measureIllustrationSpacing = () => {
+    if (!illustrationTitle) return;
+    const { fontVariationSettings, letterSpacing } = illustrationTitle.style;
+    illustrationTitle.style.fontVariationSettings = `"opsz" ${ILLUST_OPSZ_END}, "wght" ${ILLUST_WGHT_END}`;
+    illustrationTitle.style.letterSpacing = '0em';
+    const range = document.createRange();
+    range.selectNodeContents(illustrationTitle);
+    const textWidth = range.getBoundingClientRect().width;
+    const fontSize = parseFloat(getComputedStyle(illustrationTitle).fontSize);
+    const gaps = illustrationTitle.textContent.trim().length; // letter-spacing is added after every letter
+    const room = illustrationTitle.clientWidth * 0.95 - textWidth;
+    illustSpacingMax = Math.max(0, Math.min(ILLUST_SPACING_MAX, room / gaps / fontSize));
+    illustrationTitle.style.fontVariationSettings = fontVariationSettings;
+    illustrationTitle.style.letterSpacing = letterSpacing;
+  };
 
   // scroll-linked path scrub for motion category title
   const motionTitle = document.querySelector('.work__category-title--motion');
@@ -492,7 +511,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     const automaticallyPlaced = indexedCards.filter(({ card }) => !card.dataset.column);
 
-    [...manuallyPlaced, ...automaticallyPlaced].forEach(({ card }) => {
+    const placementOrder = [...manuallyPlaced, ...automaticallyPlaced];
+    // single column (phones): text cards lead each section, then the rest in their usual order
+    if (columnCount === 1) {
+      placementOrder.sort((first, second) =>
+        second.card.classList.contains('work__card--text') - first.card.classList.contains('work__card--text'));
+    }
+
+    placementOrder.forEach(({ card }) => {
       const image = card.querySelector('img');
       const isTextCard = card.classList.contains('work__card--text');
       const imageRatio = image && image.naturalWidth
@@ -575,6 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
 
     masonryGrids.forEach(layoutMasonry);
+    measureIllustrationSpacing();
 
     if (motionPath && motionText) {
       motionPathLength = motionPath.getTotalLength();
@@ -584,15 +611,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (naturalTextLength > motionTextLength) {
         motionText.setAttribute('textLength', `${motionTextLength}`);
       }
-      motionText.setAttribute('startOffset', '0');
-      const startBounds = motionText.getBBox();
-      motionStartOffset = Math.max(-startBounds.x, 0);
+      // measure where the lettering really lands on screen (getBBox ignores how glyphs
+      // tilt along the curve), converted back into viewBox units
+      const svgBox = motionPath.ownerSVGElement.getBoundingClientRect();
+      const toViewBox = MOTION_VIEWBOX_WIDTH / (svgBox.width || 1);
 
-      const naturalEndOffset = Math.max(motionPathLength - motionTextLength, 0);
-      motionText.setAttribute('startOffset', `${naturalEndOffset}`);
-      const endBounds = motionText.getBBox();
-      const endOverflow = Math.max(endBounds.x + endBounds.width - MOTION_VIEWBOX_WIDTH, 0);
-      motionEndOffset = Math.max(naturalEndOffset - endOverflow, motionStartOffset);
+      motionText.setAttribute('startOffset', '0');
+      const startBounds = motionText.getBoundingClientRect();
+      motionStartOffset = Math.max((svgBox.left - startBounds.left) * toViewBox, 0);
+
+      // pull the end position back until the whole word fits; re-check each time, since
+      // letters past the end of the path aren't drawn (or measured) until they move back onto it
+      let endOffset = Math.max(motionPathLength - motionTextLength, 0);
+      for (let attempt = 0; attempt < 6; attempt++) {
+        motionText.setAttribute('startOffset', `${endOffset}`);
+        const endOverflow = (motionText.getBoundingClientRect().right - svgBox.right) * toViewBox;
+        if (endOverflow <= 0) break;
+        endOffset -= endOverflow + 2;
+      }
+      motionEndOffset = Math.max(endOffset, motionStartOffset);
     }
   };
 
@@ -640,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const opsz = ILLUST_OPSZ_START + (ILLUST_OPSZ_END - ILLUST_OPSZ_START) * illustProgress;
       const wght = ILLUST_WGHT_START + (ILLUST_WGHT_END - ILLUST_WGHT_START) * illustProgress;
       illustrationTitle.style.fontVariationSettings = `"opsz" ${opsz.toFixed(0)}, "wght" ${wght.toFixed(0)}`;
-      illustrationTitle.style.letterSpacing = `${0.7 * illustProgress}em`;
+      illustrationTitle.style.letterSpacing = `${illustSpacingMax * illustProgress}em`;
     }
 
     // Scrub the lettering along the four-oscillation SVG wave.
@@ -699,13 +736,13 @@ document.addEventListener('DOMContentLoaded', () => {
   measure();
   applyPositions();
 
-  // Touch screens have no hover, so a card scrolling through the top third of the
+  // Touch screens have no hover, so a card scrolling through the top half of the
   // screen gets .is-in-focus, which shows the same colour/label as hovering
   const watchCardFocus = () => {
     if (!window.matchMedia('(hover: none)').matches) return;
     const focusObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => entry.target.classList.toggle('is-in-focus', entry.isIntersecting));
-    }, { rootMargin: '0px 0px -66.67% 0px' }); // a band across the top third, where section links land
+    }, { rootMargin: '0px 0px -50% 0px' }); // a band across the top half, where section links land
     document.querySelectorAll('.work__card:not(.work__card--text)').forEach(card => focusObserver.observe(card));
   };
 
@@ -718,6 +755,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     masonryGrids.forEach(layoutMasonry);
+    // text cards are measured by their text, which grows once the web fonts arrive
+    // (re-measure everything: the illustration and motion titles' widths depend on their web fonts too)
+    document.fonts?.ready.then(() => {
+      measure();
+      requestUpdate();
+    });
     document.querySelectorAll('[data-scroll-animation]').forEach(image => {
       const frameCount = Number(image.dataset.frameCount);
       const frameStart = Number(image.dataset.frameStart);

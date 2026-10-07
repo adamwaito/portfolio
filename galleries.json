@@ -594,7 +594,7 @@
       "projects": [
         {
           "name": "The Great Canadian Baking Show",
-          "description": "Here are a few of the illustrations of competitors' bakes that I worked on that were featured on Season 8 of The Great Canadian Baking Show for CBC Television, supervised by the immensely talented Alex Bayless. I also worked on Season 10, which premieres Oct 4 on CBC.",
+          "description": "Here are a few of the illustrations of competitors' bakes that I worked on that were featured on Season 8 of The Great Canadian Baking Show for CBC Television, supervised by the immensely talented Alex Bayless. I also worked on Season 10, which premieres Oct 4, 2026 on CBC.",
           "images": [
             {
               "src": "images/project_images/illustration/other/BakingShow/bakingshow1_5tlqgzcjjb.webp",
@@ -693,8 +693,13 @@
     "projects": [
       {
         "name": "Armadillo Avalanche",
-        "description": "It was a real pleasure and privilege to work as Layout Supervisor and Background Artist on Armadillo Avalanche, a series of digital shorts for Marble Media. The amazing Paul Hammond was concept artist.",
+        "description": "I worked as layout supervisor and background artist on Armadillo Avalanche, a series of digital shorts for Marble Media. Paul Hammond's concept art was a masterclass in colour, texture, and inventive geometry, and getting to use it as a launching pad for the show's backgrounds was a genuine joy.",
         "images": [
+          {
+            "type": "video",
+            "src": "https://youtu.be/Tc7ahKP39Gg?si=8dG4vbrBEKBZLqmQ",
+            "caption": "Series trailer"
+          },
           {
             "src": "images/project_images/layout/ArmadilloAvalanche/armadillo1_1jvnq6if4f.jpg",
             "caption": ""
@@ -723,7 +728,7 @@
       },
       {
         "name": "Black-ish",
-        "description": "I was Location Designer/Layout Artist for Black-ish “Election Special Pt. 2” for ABC Television. During COVID 19 lockdown in 2020, a lot of live-action shows had to stop production. Animated specials like this were a way to make new episodes remotely!",
+        "description": "I was Location Designer/Layout Artist for Black-ish “Election Special Pt. 2” for ABC Television. During COVID 19 lockdown in 2020, a lot of live-action shows had to stop production. Animated specials like this were a creative way to make new episodes remotely.",
         "images": [
           {
             "src": "images/project_images/layout/Black-ish/blackish1_uiaif2v7hp.jpg",
@@ -745,7 +750,7 @@
       },
       {
         "name": "CORNER GAS ANIMATED",
-        "description": "My entry point into the animation industry was working as Layout Artist on award-winning animated sitcom Corner Gas Animated Seasons 2, 3, and 4 for CTV Comedy/Crave and IMDB TV, a wonderful experience.",
+        "description": "I got my start in animation as a layout artist on seasons 2 through 4 of Corner Gas Animated, the award-winning sitcom for CTV Comedy/Crave and IMDb TV. It was a wonderfully positive experience and a crash course in the TV animation pipeline.",
         "images": [
           {
             "src": "images/project_images/layout/CornerGas/cornergas1_elpekizo5v.webp",
@@ -775,7 +780,7 @@
       },
       {
         "name": "Dino Dex",
-        "description": "Being Layout Artist/Background Painter on Dino Dex for TVOKids was fun because I got to develop two very distinct styles for the episodes, 'Dino World' and 'Dino Bodies.'",
+        "description": "As layout artist and background painter on Dino Dex for TVOKids, I got to develop two distinct visual styles for the show's segments, \"Dino World\" and \"Dino Bodies.\"",
         "images": [
           {
             "src": "images/project_images/layout/DinoDex/dinobodies1_k8srh03trj.webp",
@@ -811,6 +816,12 @@
         "name": "Housebroken",
         "description": "In a coproduction between Smiley Guy (TO) and Bento Box (LA) I was Assistant Layout Supervisor and Background Artist on Housebroken for Fox, a very funny animal sitcom with an insanely stacked comedic voice cast.",
         "images": [
+          {
+            "type": "video",
+            "src": "https://youtu.be/8sLyZBzDjO0?si=xrp96QW7OHv9rbKp",
+            "caption": "",
+            "thumb": "Season 2 trailer"
+          },
           {
             "src": "images/project_images/layout/Housebroken/housebroken1_1t15p6muoj.webp",
             "caption": ""
