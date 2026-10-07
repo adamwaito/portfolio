@@ -20,6 +20,7 @@ Edit in `admin.html` → Export → replace `projects.json` / `galleries.json` i
 
 ## Conventions
 
+- **Sizing:** the desktop base is `html { font-size: 15px }` and phones (≤720px) reset it to 10px. Size things in `rem` or `vw` and test at 100% browser zoom. The site was first designed at 150% zoom, which is why the desktop base is 15px.
 - **Cache-busting:** `index.html` loads `css/style.css?v=N` and `js/script.js?v=N`, and `admin.html` loads `js/admin.js?v=N`. Raise the number whenever you change that file.
 - **Images:** anything large is WebP, at most 2400px on its longest side. The originals are kept outside the repo. Scroll-animation frames take their file type from the card's first frame (`frameExtension` in `script.js`), so all frames must share one format.
 - **Hover:** card hover effects are wrapped in `@media (hover: hover)`. On touch screens, `watchCardFocus` in `script.js` adds `.is-in-focus` to cards in the top third of the screen instead. Style both whenever you change card hover.

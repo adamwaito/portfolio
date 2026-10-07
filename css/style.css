@@ -33,7 +33,9 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; font-size: 10px;}
+/* 15px: the site was designed at 150% browser zoom on a 10px base, so desktop is scaled 1.5x
+   (rem and fixed px sizes; vw sizes already looked the same at any zoom). Phones reset to 10px. */
+html { scroll-behavior: smooth; font-size: 15px;}
 
 
 body {
@@ -125,12 +127,12 @@ h1, h2, h3, h4 { margin: 0; }
 /* bubbles are always position:fixed so top/left/right can animate smoothly
    between the scattered hero layout and the docked top-right row */
 .bubble {
-  --bubble-size: clamp(25px, 7vw, 40px);
+  --bubble-size: clamp(38px, 7vw, 60px);
   /* read by script.js to compute the docked top-right row */
-  --dock-edge: 24px;
+  --dock-edge: 36px;
   /* desktop: nudge from the docked spot, where each bubble's centre sits on the bar's bottom edge */
   --dock-top: 0px;
-  --dock-gap: 14px;
+  --dock-gap: 21px;
   position: fixed;
   display: flex;
   align-items: center;
@@ -313,7 +315,7 @@ h1, h2, h3, h4 { margin: 0; }
   line-height: 0.9;
   z-index: 3;
   pointer-events: none;
-  outline: solid 6px var(--pink); outline-offset: 12px;
+  outline: solid 9px var(--pink); outline-offset: 18px;
 }
 
 .about__grid {
@@ -336,8 +338,8 @@ h1, h2, h3, h4 { margin: 0; }
 }
 
 .about__portrait img {
-  /* scales with the viewport: ~600px at a 1440px-wide window, clamped at the extremes */
-  height: clamp(320px, 42vw, 760px);
+  /* scales with the viewport, clamped at the extremes */
+  height: clamp(480px, 42vw, 1140px);
   width: auto;
   max-width: 100%; /* never wider than .about__portrait's 50vw */
   object-fit: cover;
@@ -474,7 +476,7 @@ h1, h2, h3, h4 { margin: 0; }
   border: 2px solid var(--ink);
   border-radius: 6px;
   padding: 2rem;
-  min-height: 250px;
+  min-height: 375px;
   height:auto;
   display: flex;
   align-items: center;
@@ -636,7 +638,7 @@ h1, h2, h3, h4 { margin: 0; }
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(94vw, 1240px);
+  width: min(94vw, 1860px);
   max-height: 94vh;
   overflow: auto;
   padding: 3rem 4.5rem;
@@ -1093,6 +1095,9 @@ h1, h2, h3, h4 { margin: 0; }
 =================================================== */
 
 @media (max-width: 720px) {
+  /* phone layout was designed at normal zoom, on the original 10px base */
+  html { font-size: 10px; }
+
   .bubble {
     --bubble-size: clamp(46px, 13vw, 64px);
     --dock-edge: 12px;

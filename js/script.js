@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const cards = Array.from(grid.querySelectorAll('.work__card'));
     const columnCount = window.innerWidth <= 720 ? 1 : 4;
-    const gap = 4;
+    const gap = 6;
     const gridWidth = grid.getBoundingClientRect().width;
     const unit = (gridWidth - gap * (columnCount - 1)) / columnCount;
     const columnWidths = Array(columnCount).fill(unit);
