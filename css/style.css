@@ -1,0 +1,1243 @@
+/* ===================================================
+   Adam Waito — Portfolio
+   Font: Literata (variable, multiple weights)
+=================================================== */
+ 
+@font-face {
+  font-family: 'Win31 System';
+  src: url('../fonts/system-font-from-windows-3-1.otf.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --cream:  #fbfaf7;
+  --ink:    #303030;
+  --blue:   #2b2a28;
+  --teal:   #00b1ba;
+  --gold:   #dca200;
+  --pink:   #f10674;
+  --pink-light: #eca7c7;
+  --gray:   #aeada9;
+  --gray-dark: #8a8985;
+
+  --mainfont: 'lexia-mono-variable'; /* main typeface: change this to try other fonts */
+  --font: var(--mainfont), Arial, sans-serif;
+  --font-retro: 'Win31 System', 'MS Sans Serif', Tahoma, Arial, sans-serif; /* retro UI chrome */
+
+  --container: 1800px;
+}
+
+/* --mainfont: 'adapter-mono-pe-variable'; */
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 10px;}
+
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  /* nothing may widen the page sideways (clip, unlike hidden, keeps .hero__bar sticky) */
+  overflow-x: clip;
+}
+
+body.modal-is-open { overflow: hidden; }
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3, h4 { margin: 0; }
+
+.work__category-subtitle {
+  font-weight: 600;
+  letter-spacing: -.05em;
+  font-size: 1.2rem;
+  color: var(--cream);
+  margin: 0 0 0.75rem;
+}
+
+.section__inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 1vw;
+}
+
+.eyebrow {
+  font-weight: 600;
+  letter-spacing: -.05em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: var(--gray-dark);
+  margin: 0 0 0.75rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5em 1em;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.btn:hover {
+  background: var(--ink);
+  color: var(--cream);
+  transform: translateY(-2px);
+}
+.btn--big { border-color: var(--pink); color: var(--pink); font-size: 1rem; }
+.btn--big:hover { background: var(--pink); color: var(--cream); }
+
+/* ===================================================
+   HERO
+=================================================== */
+
+.hero {
+  position: relative;
+  /* the sticky .hero__bar follows the hero, so leave room for it on the first screen */
+  min-height: calc(100vh - var(--hero-bar-height, 0px));
+  overflow: hidden;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.hero__scribble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* floating nav bubbles, positioned to mirror the mockup */
+.bubble-nav { position: absolute; inset: 0; z-index: 100; pointer-events: none; }
+
+/* bubbles are always position:fixed so top/left/right can animate smoothly
+   between the scattered hero layout and the docked top-right row */
+.bubble {
+  --bubble-size: clamp(25px, 7vw, 40px);
+  /* read by script.js to compute the docked top-right row */
+  --dock-edge: 24px;
+  /* desktop: nudge from the docked spot, where each bubble's centre sits on the bar's bottom edge */
+  --dock-top: 0px;
+  --dock-gap: 14px;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bubble-size);
+  height: var(--bubble-size);
+  border-radius: 50%;
+  color: #fff;
+  font-size: clamp(0.8rem, 1vw, 1.0rem);
+  font-weight: 300;
+  letter-spacing: -0.05em;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.0);
+  z-index: 50;
+  pointer-events: auto;
+  /* top/left are driven per-frame by script.js as the user scrolls, so no position transition here */
+  transition: background-color 0.25s ease, color 0.25s ease, outline 0.25s ease;
+}
+.bubble:hover,
+.bubble.is-active { background-color: white; color: var(--ink); outline: 2px solid var(--ink); }
+
+/* scattered state (initial paint / no-JS fallback) — left-to-right order matches the docked row (home, about, work, contact) */
+.bubble--home  { top: 20%;  left: 15%;  right: auto; background: var(--pink); }
+.bubble--about { top: 15%; left: 44%; right: auto; background: var(--teal); }
+.bubble--work  { top: 35%; left: 58%; right: auto; background: var(--gold); }
+.bubble--contact { top: 2%; left: 82%; right: auto; background: var(--gray-dark); }
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding: 0 6vw 4vw;
+  max-width: 1800px;
+  margin: 0 auto 0 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hero__name {
+  line-height: 0.8;
+  margin-bottom: 0;
+}
+.hero__first,
+.hero__last {
+  display: block;
+  font-size: clamp(4.5rem, 13vw,  11.5rem);
+}
+.hero__first {
+  color: var(--ink);
+  font-family: var(--mainfont), Arial, sans-serif;
+  font-weight: 100;
+  font-style: normal;
+  letter-spacing: -0.08em;
+
+}
+.hero__last {
+  color: var(--ink);
+  font-family: var(--mainfont), sans-serif;
+  font-optical-sizing: none; /* disable optical sizing */
+  font-weight: 900;
+  font-style: normal;  
+  letter-spacing: -0.08em;
+
+}
+
+.hero__tagline {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+}
+
+.hero__tagline-mark {
+  --tagline-mark-color: var(--cream);
+  position: relative;
+  width: clamp(8rem, 50vw, 45rem);
+}
+
+/*
+
+.hero__tagline-img {
+  width: 100%;
+}
+
+@supports ((mask: url('')) or (-webkit-mask: url(''))) {
+  .hero__tagline-img {
+    opacity: 0;
+  }
+
+  .hero__tagline-mark::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--tagline-mark-color);
+    -webkit-mask: url('../images/multidisciplinary-designer-large.png') center / contain no-repeat;
+    mask: url('../images/multidisciplinary-designer-large.png') center / contain no-repeat;
+  }
+}
+
+*/
+
+.hero__blurb {
+  color: var(--ink);
+  font-size: clamp(.75rem, 2vw, 1rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-top: 2rem;
+  letter-spacing: -.05em;
+  text-align: left;
+
+}
+
+.hero__bar {
+  /* scrolls up with the page, then sticks once it touches the top of the screen */
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--ink);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.75rem 4vw;
+}
+.hero__bar a {
+  color: #fff;
+  font-size: clamp(0.85rem, 1.2vw, 6rem);
+  font-weight: 400;
+  padding: 0.1rem 0.5rem;
+  letter-spacing: -0.05em;
+}
+.hero__bar a:hover { text-decoration: underline; }
+
+/* measurement-only layout: script.js briefly toggles this to read the
+   clustered-left target position of each nav item, then removes it */
+.hero__bar--measuring-cluster {
+  justify-content: flex-start;
+  gap: var(--bar-gap-end, 2.5rem);
+}
+
+/* ===================================================
+   SECTIONS (generic)
+=================================================== */
+
+.section { padding: 4rem 0; }
+.section__title { font-size: clamp(2rem, 7vw, 4rem); 
+  margin-top: 1rem; 
+  margin-bottom: -2rem; 
+  font-weight: 200; 
+  letter-spacing: -0.05em; 
+  line-height: .75;
+  font-optical-sizing: none;
+  color: white;
+}
+
+/* ===================================================
+   ABOUT
+=================================================== */
+
+.about {
+  --hello-size: clamp(4rem, 12vw, 12rem);
+  --hello-top: 6rem;
+  --hello-left: 12rem;
+  --hello-color: var(--pink);
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.about__hello {
+  position: absolute;
+  top: var(--hello-top);
+  left: var(--hello-left);
+  font-family: 'mercato-variable', sans-serif;
+  font-size: var(--hello-size);
+  font-weight: 700;
+  color: var(--hello-color);
+  line-height: 0.9;
+  z-index: 3;
+  pointer-events: none;
+  outline: solid 6px var(--pink); outline-offset: 12px;
+}
+
+.about__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.about__portrait {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: auto;
+  max-width: 50vw;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.about__portrait img {
+  /* scales with the viewport: ~600px at a 1440px-wide window, clamped at the extremes */
+  height: clamp(320px, 42vw, 760px);
+  width: auto;
+  max-width: 100%; /* never wider than .about__portrait's 50vw */
+  object-fit: cover;
+  display: block;
+  opacity: 80%;
+}
+
+.about__text {
+  padding: 7rem 6vw 7rem 52vw;
+  max-width: var(--container)
+}
+
+.about__text h2 { font-size: clamp(2rem, 3.6vw, 4.8rem); margin-bottom: 1.2rem; color: var(--ink); font-optical-sizing: none; letter-spacing: -.05em; font-weight: 200;}
+.about__text p { font-size: 1.05rem; line-height: 1.2; margin: 0 0 1.2rem; max-width: 60ch; color: var(--ink); }
+
+.about__clients {
+  position: relative;
+  z-index: 2;
+  padding: 0rem 6vw 5rem;
+  left: 20vw;
+  max-width: 65vw;
+
+}
+
+.about__clients-title {
+  color: var(--ink);
+  font-family: 'literata', serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 200;
+  line-height: .8;
+  margin: 0 0 2rem;
+  text-align: left;
+  font-optical-sizing: none; /* disable optical sizing */
+
+
+}
+
+/* newspaper columns instead of grid rows, so a wrapped name doesn't leave a gap beside it */
+.about__clients-list {
+  columns: 3;
+  column-gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: clamp(.5rem, 1.2vw, .8rem);
+  line-height: 1;
+  font-weight: 300;
+}
+.about__clients-list li {
+  break-inside: avoid;
+  margin-bottom: .45rem;
+}
+/*
+.about__clients-list li::before {
+  content: '•';
+  color: var(--pink);
+  margin-right: .45rem;
+}
+*/
+
+/* ===================================================
+   WORK
+=================================================== */
+
+.work {
+  background: var(--ink);
+  /* lets children use cqw: % of this section's width, which excludes the scrollbar (unlike vw) */
+  container-type: inline-size;
+}
+
+.work__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-bottom: 4rem;
+}
+.work__tabs a {
+  border: 2px solid var(--ink);
+  padding: 0.5em 1em;
+  border-radius: 2px;
+  font-size: clamp(0.8rem, 1vw, 1.05rem);
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.work__tabs a:hover { background: var(--ink); color: var(--cream); }
+
+.work__category { margin-bottom: 5rem; scroll-margin-top: 2rem; width: 100cqw; margin-left: calc(50% - 50cqw); }
+.work__category:last-child { margin-bottom: 0; }
+
+.work__category-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: -0.2rem;
+  margin-top: -2rem;
+
+}
+
+.work__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: 0.25rem;
+  width: 100cqw;
+  margin-left: calc(50% - 50cqw);
+}
+
+.work__card {
+  display: block;
+  position: relative;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+}
+
+.work__card--wide {
+  grid-column: span 2;
+}
+
+.work__card--tall {
+  grid-row: span 2;
+}
+
+.work__card[data-span="2"] {
+  grid-column: span 2;
+}
+
+.work__card[data-span="3"] {
+  grid-column: span 3;
+}
+
+.work__card--text {
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  padding: 2rem;
+  min-height: 250px;
+  height:auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  pointer-events: auto;
+  font-size: 1rem;
+}
+
+.work__card--text::after {
+  display: none;
+}
+
+.work__card--text span {
+  position: static;
+  transform: none;
+  color: var(--ink);
+  font-weight: 500;
+  opacity: 1;
+  pointer-events: auto;
+  text-align: left;
+  width: auto;
+  padding: 0;
+  white-space: pre-line;
+}
+
+.work__category--illustration .work__grid {
+  display: block;
+  position: relative;
+}
+
+.work__category--webux .work__grid {
+  display: block;
+  position: relative;
+}
+
+.work__category--layout .work__grid,
+.work__category--motion .work__grid {
+  display: block;
+  position: relative;
+}
+
+.work__category--illustration .work__card {
+  position: absolute;
+  margin: 0;
+}
+
+.work__category--webux .work__card {
+  position: absolute;
+  margin: 0;
+}
+
+.work__category--layout .work__card,
+.work__category--motion .work__card {
+  position: absolute;
+  margin: 0;
+}
+
+.work__category--illustration .work__card--wide,
+.work__category--illustration .work__card--tall {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+.work__card-img {
+  aspect-ratio: auto;
+  width: 100%;
+  border-radius: 0px;
+  background: repeating-linear-gradient(135deg, #e2ddc7 0 12px, #ded8c1 12px 24px);
+}
+
+.work__card-img img {
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+}
+
+.work__card:not(.work__card--text)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  border-radius: 0px;
+  pointer-events: none;
+  z-index: 1;
+  background: rgba(87, 87, 87, 0);
+}
+
+/* hover on mouse/trackpad devices; on touch screens script.js adds .is-in-focus
+   to the card scrolling through the middle of the screen instead */
+@media (hover: hover) {
+  .work__card:not(.work__card--text):hover::after { opacity: 1; }
+}
+.work__card.is-in-focus::after { opacity: 1; }
+
+.work__card-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-75%);
+  left: 12%;
+  font-weight: 400;
+  font-size: clamp(1rem, 1vw, 1.5rem);
+  z-index: 2;
+  pointer-events: none;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  line-height: 1.2;
+
+}
+
+.work__card-label-text {
+  display: inline;
+  background: var(--ink);
+  color: white;
+  padding: 0.15em 0.35em;
+  white-space: pre-line;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  line-height: 1.2;
+  pointer-events: auto; /* so the label text can have its own hover state */
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* inverts only while the pointer is on the label itself */
+@media (hover: hover) {
+  .work__card-label-text:hover {
+    background: white;
+    color: var(--ink);
+  }
+
+  .work__card:not(.work__card--text):hover .work__card-label {
+    opacity: 1;
+  }
+}
+.work__card.is-in-focus .work__card-label { opacity: 1; }
+
+.project-modal {
+  /* the image takes whatever height is left once the breadcrumb, caption, thumbnail
+     strip and padding (~26rem together) are in, so the panel fits without scrolling */
+  --modal-image-h: clamp(20rem, calc(94vh - 26rem), 54rem);
+  --modal-muted: #dcdad3;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+}
+
+.project-modal.is-open { display: block; }
+
+.project-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(24, 24, 24, 0.6);
+}
+
+.project-modal__panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(94vw, 1240px);
+  max-height: 94vh;
+  overflow: auto;
+  padding: 3rem 4.5rem;
+  background: var(--cream);
+  color: var(--ink);
+  transform: translate(-50%, -50%);
+}
+
+.project-modal__breadcrumb {
+  margin: 0 0 1.6rem;
+  padding: 0 4.5rem 0 5rem; /* lines up with the image, clear of the close button */
+  font-size: 1.8rem;
+}
+
+.project-modal__close {
+  position: absolute;
+  top: 2rem;
+  right: 2.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 3.6rem;
+  line-height: 1;
+  padding: .25rem .75rem;
+}
+
+/* [prev arrow] [image + caption] [next arrow] [project info] */
+.project-modal__stage {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1.7fr) 2rem minmax(0, 1fr);
+  gap: 0 .5rem;
+  align-items: start;
+}
+
+.project-modal__figure { margin: 0; min-width: 0; }
+
+.project-modal__image-button {
+  display: block;
+  width: 100%;
+  height: var(--modal-image-h);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer; /* steps to the next image */
+}
+
+.project-modal__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.project-modal__video { height: var(--modal-image-h); background: #000; }
+.project-modal__video[hidden], .project-modal__image-button[hidden] { display: none; }
+.project-modal__video iframe,
+.project-modal__video video { display: block; width: 100%; height: 100%; border: 0; }
+
+.project-modal__caption { margin-top: 1rem; min-height: 1.4em; font-size: 1rem; }
+.project-modal__fullsize { margin-left: .5em; white-space: nowrap; text-decoration: underline; }
+.project-modal__fullsize[hidden] { display: none; }
+
+.project-modal__arrow,
+.project-modal__strip-arrow {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+}
+.project-modal__arrow { height: var(--modal-image-h); }
+.project-modal__arrow:hover,
+.project-modal__strip-arrow:hover { color: var(--ink); }
+.project-modal__arrow::before,
+.project-modal__strip-arrow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.3rem;
+  height: 1.6rem;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+}
+.project-modal__strip-arrow::before { width: .65rem; height: .8rem; }
+.project-modal__arrow--prev::before,
+.project-modal__strip-arrow--prev::before { clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+.project-modal__arrow--next::before,
+.project-modal__strip-arrow--next::before { clip-path: polygon(0 0, 100% 50%, 0 100%); }
+
+.project-modal__info {
+  max-height: var(--modal-image-h);
+  overflow: auto;
+  padding-left: 3rem;
+}
+.project-modal__name {
+  margin: 0 0 1rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+.project-modal__description { margin: 0; font-size: 1rem; line-height: 1.4; white-space: pre-line; }
+.project-modal__description a { color: inherit; text-decoration: underline; text-underline-offset: 0.15em; overflow-wrap: anywhere; }
+
+/* thumbnail carousel, grouped by project */
+.project-modal__filmstrip {
+  display: grid;
+  /* same columns as .project-modal__stage, so the strip lines up under the image
+     and the project list under the description: [◀] [strip] [▶] [project list] */
+  grid-template-columns: 2rem minmax(0, 1.7fr) 2rem minmax(0, 1fr);
+  gap: 0 .5rem;
+  align-items: end;
+  margin-top: 2rem;
+}
+.project-modal__strip-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  height: 6rem; /* centred on the thumbnail row */
+}
+.project-modal__strip-arrow { height: 1.6rem; }
+/* skip to previous/next project: a triangle with a bar, like |◀ and ▶| */
+.project-modal__skip {
+  position: relative;
+  height: 1.6rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+}
+.project-modal__skip:hover { color: var(--ink); }
+.project-modal__skip::before,
+.project-modal__skip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: .8rem;
+  background: currentColor;
+  transform: translateY(-50%);
+}
+.project-modal__skip::before { width: .65rem; }
+.project-modal__skip::after { width: .15rem; }
+.project-modal__skip--next::before { left: calc(50% - .4rem); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.project-modal__skip--next::after { left: calc(50% + .25rem); }
+.project-modal__skip--prev::before { left: calc(50% - .25rem); clip-path: polygon(100% 0, 100% 100%, 0 50%); }
+.project-modal__skip--prev::after { left: calc(50% - .4rem); }
+.project-modal__strip {
+  display: flex;
+  gap: 3rem;
+  overflow-x: auto;
+  padding: 4px; /* room for the active thumbnail's outline */
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.project-modal__strip::-webkit-scrollbar { display: none; }
+.project-modal__group { flex: none; display: grid; gap: .8rem; }
+.project-modal__project-button {
+  padding: .6rem .8rem;
+  border: 0;
+  background: var(--modal-muted);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+.project-modal__project-button:hover,
+.project-modal__project-button.is-active { background: var(--ink); color: var(--cream); }
+.project-modal__thumbs { display: flex; gap: .8rem; }
+.project-modal__thumb {
+  width: 6rem;
+  height: 6rem;
+  padding: 0;
+  border: 0;
+  background: var(--modal-muted);
+  cursor: pointer;
+}
+.project-modal__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.project-modal__thumb:hover { opacity: .8; }
+.project-modal__thumb.is-active { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* video thumbnails: play triangle over the image, or on a dark tile when there's no thumbnail */
+.project-modal__thumb.is-video { position: relative; background: var(--ink); }
+.project-modal__thumb.is-video::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.2rem;
+  height: 1.4rem;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  transform: translate(-40%, -50%);
+}
+.project-modal__thumb.is-video::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(24, 24, 24, .55);
+  transform: translate(-50%, -50%);
+}
+
+/* text list of the gallery's projects, beside the thumbnails */
+.project-modal__index {
+  display: flex;
+  gap: .5rem;
+  height: 10rem; /* project label + thumbnails, so it lines up with the strip */
+  padding: 1rem 1rem 1rem 1.4rem;
+  border: 0px solid var(--modal-muted);
+  margin-left: 3rem; /* matches .project-modal__info's left padding */
+}
+.project-modal__index-list {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.project-modal__index-list::-webkit-scrollbar { display: none; }
+.project-modal__index-button {
+  display: block;
+  width: 100%;
+  padding: .15rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.project-modal__index-button:hover { text-decoration: underline; }
+.project-modal__index-button.is-active { font-weight: 600; }
+.project-modal__index-arrows { display: flex; flex-direction: column; justify-content: space-between; }
+.project-modal__index-arrow {
+  position: relative;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--modal-muted);
+  cursor: pointer;
+}
+.project-modal__index-arrow:hover { color: var(--ink); }
+.project-modal__index-arrow::before {
+  content: '';
+  position: absolute;
+  inset: .2rem;
+  background: currentColor;
+}
+.project-modal__index-arrow--up::before { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.project-modal__index-arrow--down::before { clip-path: polygon(0 0, 100% 0, 50% 100%); }
+
+@media (max-width: 720px) {
+  .project-modal { --modal-image-h: 45vh; }
+  .project-modal__panel { width: 100vw; max-height: 100vh; height: 100%; padding: 2rem 1.6rem 2.4rem; }
+  .project-modal__breadcrumb { padding-left: 0; }
+  .project-modal__stage { grid-template-columns: 3rem minmax(0, 1fr) 3rem; gap: 0 .4rem; }
+  .project-modal__info { grid-column: 1 / -1; max-height: none; padding: 2rem 0 0; }
+  .project-modal__filmstrip { grid-template-columns: 2.4rem minmax(0, 1fr) 2.4rem; gap: .8rem; }
+  .project-modal__index { grid-column: 1 / -1; height: 11rem; margin: 1rem 0 0; }
+  .project-modal__thumb { width: 7rem; height: 7rem; }
+}
+
+
+/* ===================================================
+   WEB/UX CATEGORY
+=================================================== */
+
+.work__category--webux {
+  background-color: var(--ink);
+  padding: 3rem;
+}
+
+.work__category-title--webux {
+  color: white;
+  font-size: 2rem;
+  justify-content: flex-end;
+  font-weight: 500;
+  font-family: var(--mainfont), sans-serif;
+  font-size: clamp(2rem, 9vw, 7rem);
+  font-optical-sizing: none; /* disable optical sizing */
+  letter-spacing: -.05em;
+
+} 
+
+/* WINDOWS 3.1 WINDOW styles for the web/dev/UX section now live in css/win31.css
+   (its <link> is commented out in index.html; see the WIN31 notes there) */
+
+/* ===================================================
+   ILLUSTRATION CATEGORY
+=================================================== */
+
+.work__category--illustration {
+  background: var(--ink);
+  padding: 3rem;
+}
+
+.work__category-title--illustration {
+  font-size: 2.5rem;
+  justify-content: center;
+  font-variation-settings: "opsz" 1000, "wght" 100;
+  font-family: 'stadio-now-variable', serif; 
+  /* font-family: 'helvetica-neue-lt-pro', sans-serif; */
+
+  font-size: clamp(2.5rem, 12vw, 9rem);
+  letter-spacing: 0em;
+  /* the letter-spacing scrub can grow wider than a phone screen; clip it rather than widen the page */
+  overflow: hidden;
+  white-space: nowrap;
+    /* Color of the text inside (transparent makes it hollow) */
+  color: transparent; 
+  
+  /* Shorthand for width and color of the outline */
+  -webkit-text-stroke: 1px white; 
+}
+
+.hollow-outline-text {
+  font-size: 4rem;
+  font-weight: bold;
+  
+  /* Color of the text inside (transparent makes it hollow) */
+  color: transparent; 
+  
+  /* Shorthand for width and color of the outline */
+  -webkit-text-stroke: 2px #000000; 
+}
+
+
+/* ===================================================
+   2D LAYOUT / BG ART
+=================================================== */
+
+.work__category--layout {
+  background: var(--ink);
+  padding: 3rem;
+}
+
+.work__category-title--layout {
+  color: white;
+  justify-content: left;
+  font-weight: 200;
+  font-family: 'literata', sans-serif;
+  font-optical-sizing: none; /* disable optical sizing */
+  font-size: clamp(2.5rem, 6vw, 7rem);
+} 
+
+/* ===================================================
+   MOTION CATEGORY
+=================================================== */
+
+.work__category--motion {
+  background: var(--ink);
+  padding: 6rem;
+}
+
+.work__category-title--motion {
+  color: var(--pink);
+  height: clamp(7rem, 15.4vw, 15rem);
+  margin-left: -3rem;
+  margin-right: -3rem;
+  overflow: hidden;
+  position: relative;
+  will-change: transform;
+}
+
+.work__motion-svg {
+  display: block;
+  width: 100vw;
+  height: 100%;
+  overflow: visible;
+}
+
+.work__motion-svg path {
+  fill: none;
+}
+
+.work__motion-text {
+  fill: white;
+  font-family: var(--mainfont), sans-serif;
+  font-size: clamp(2.5rem, 6vw, 3rem);
+  font-variation-settings: "wght" 100;
+  letter-spacing: .4em;
+}
+
+/* ===================================================
+   CONTACT
+=================================================== */
+
+.contact { background: var(--ink); color: var(--cream); text-align: center; }
+.contact .eyebrow { color: var(--ink); }
+.contact h2 { font-size: clamp(2.2rem, 4.4vw, 3.4rem); margin-bottom: 1rem; }
+.contact__inner { display: flex; flex-direction: column; align-items: center; }
+.contact__blurb { max-width: 46ch; font-size: 1.1rem; opacity: 0.85; margin-bottom: 2.2rem; }
+.contact__form { display: grid; gap: 1rem; width: min(100%, 34rem); text-align: left; }
+.contact__form label { display: grid; gap: .4rem; font-size: .9rem; }
+.contact__form input,
+.contact__form textarea {
+  width: 100%;
+  padding: .75rem .85rem;
+  border: 1px solid var(--gray-dark);
+  border-radius: 0;
+  background: transparent;
+  color: var(--cream);
+  font: inherit;
+  font-size: 1rem;
+}
+.contact__form input:focus,
+.contact__form textarea:focus { outline: 2px solid var(--teal); outline-offset: 1px; border-color: var(--teal); }
+.contact__form textarea { resize: vertical; }
+.contact__honeypot { position: absolute; left: -9999px; } /* spam trap: hidden from people, filled by bots */
+.contact__submit {
+  justify-self: start;
+  padding: .75rem 1.4rem;
+  border: 1px solid var(--cream);
+  background: var(--cream);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.contact__submit:hover { background: transparent; color: var(--cream); }
+.contact__submit:disabled { opacity: .5; cursor: default; }
+.contact__status { min-height: 1.2em; margin: 0; font-size: .95rem; }
+.contact__socials { display: flex; gap: 2rem; margin-top: 2.5rem; }
+.contact__socials a { opacity: 0.75; font-weight: 500; }
+.contact__socials a:hover { opacity: 1; text-decoration: underline; }
+
+.footer {
+  background: var(--ink);
+  color: var(--gray);
+  text-align: center;
+  padding: 1.5rem 0 2.5rem;
+  font-size: 0.85rem;
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+
+@media (max-width: 720px) {
+  .bubble {
+    --bubble-size: clamp(46px, 13vw, 64px);
+    --dock-edge: 12px;
+    --dock-top: 8px;
+    --dock-gap: 8px;
+    /* dock under the sticky .hero__bar instead of on top of it (read by script.js) */
+    --dock-below-bar: 1;
+  }
+
+  .bubble--home  { top: 4%;  left: 4%;  right: auto; }
+  .bubble--about { top: 16%; left: 28%; right: auto; }
+  .bubble--work  { top: 28%; left: 52%; right: auto; }
+  .bubble--contact { top: 30%; left: 76%; right: auto; }
+
+  .hero__content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero__tagline { margin-left: 0; }
+
+  /* bio: headshot floated left with the HELLO box overlapping its top; the
+     first paragraph wraps beside it and the rest run full width underneath */
+  .about {
+    --hello-size: 4.4rem;
+    /* clears the bubbles docked under the bar when jumping to #about */
+    --hello-top: 10rem;
+    --hello-left: 2.4rem;
+    min-height: 0;
+  }
+  .about__hello { outline-width: 3px; outline-offset: 8px; }
+  .about__grid {
+    display: block;
+    padding: 9rem 1.6rem 0;
+  }
+  .about__portrait {
+    position: static;
+    float: left;
+    width: 36vw;
+    max-width: none;
+    margin: 0 1.4rem 1rem 0;
+  }
+  .about__portrait img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1.3;
+  }
+  .about__text { padding: 0 0 3rem; }
+  .about__text p { font-size: 1.2rem; line-height: 1.25; max-width: none; }
+
+  /* clients: full width under the bio, two columns */
+  .about__clients {
+    left: 0;
+    max-width: none;
+    padding: 0 1.6rem 4rem;
+  }
+  .about__clients-title { font-size: 3.6rem; margin-bottom: 1rem; }
+  .about__clients-list {
+    columns: 2;
+    column-gap: 1.4rem;
+    font-size: 1.1rem;
+    text-align: left;
+  }
+  .about__clients-list li {
+    break-inside: avoid;
+    margin-bottom: .3rem;
+  }
+
+  .work__grid {
+    grid-template-columns: 1fr;
+    width: auto;
+    margin-left: 0;
+  }
+
+  .work__card--wide,
+  .work__card--tall {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .work__category--illustration .work__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* the 1000-wide wave squashes to phone width, so use less padding, a taller
+     band and a bigger font (in viewBox units) to keep the lettering readable */
+  .work__category--motion { padding: 3rem 1.6rem; }
+  .work__category-title--motion {
+    height: 9rem;
+    margin-left: -1.6rem;
+    margin-right: -1.6rem;
+  }
+  .work__motion-svg { width: 100%; }
+  .work__motion-text { font-size: 4rem; letter-spacing: .2em; }
+}
+
+/* ===================================================
+   GREYSCALE + NOISE
+   Work card images are greyscale with a film-grain layer, both removed
+   on hover. The same grain is blended into the page/section backgrounds.
+   Grain strength: --noise-opacity (cards) and the backgrounds' blend below.
+=================================================== */
+
+:root {
+  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --noise-size: 200px 200px;
+  --noise-opacity: .6;
+}
+
+/* cards */
+.work__card:not(.work__card--text) .work__card-img {
+  position: relative;
+  filter: grayscale(1); /* the whole container, so transparent images' placeholder stripes go grey too */
+  transition: filter 0.25s ease;
+}
+.work__card:not(.work__card--text) .work__card-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--noise) 0 0 / var(--noise-size);
+  mix-blend-mode: overlay;
+  opacity: var(--noise-opacity);
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+@media (hover: hover) {
+  .work__card:not(.work__card--text):hover .work__card-img { filter: none; }
+  .work__card:not(.work__card--text):hover .work__card-img::after { opacity: 0; }
+}
+.work__card.is-in-focus .work__card-img { filter: none; }
+.work__card.is-in-focus .work__card-img::after { opacity: 0; }
+
+/* page background: grain blended into each element that paints the page's background colour */
+body,
+.hero,
+.hero__bar,
+.about,
+.work,
+.work__category--webux,
+.work__category--illustration,
+.work__category--layout,
+.work__category--motion,
+.contact,
+.footer {
+  background-image: var(--noise);
+  background-size: var(--noise-size);
+  background-blend-mode: overlay;
+}

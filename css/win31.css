@@ -1,0 +1,169 @@
+/* Windows 3.1 window for the web/dev/UX section.
+   Switched off: enable by uncommenting its <link> in index.html (see the WIN31 notes there).
+   Uses the 'Win31 System' font and --font-retro defined in style.css. */
+
+/* ===================================================
+   WINDOWS 3.1 WINDOW (web/dev/UX section)
+=================================================== */
+
+.win31 {
+  --win31-face: #c0c0c0;
+  --win31-shadow: #808080;
+  --win31-bar: 24px;          /* title bar height, scrollbar width */
+  --win31-notch: 26px;        /* distance of the frame's corner notches */
+  --win31-client: var(--gray-dark); /* background behind the projects */
+
+  margin-top: 3rem; /* clears the Selected Work heading's negative margin */
+  padding: 2px;
+  border: 1px solid #000;
+  /* the resize-frame corner notches: full-length lines that only show
+     through the 4px gray frame, since the contents cover the middle */
+  background:
+    linear-gradient(#000, #000) left var(--win31-notch) top 0 / 1px 100% no-repeat,
+    linear-gradient(#000, #000) right var(--win31-notch) top 0 / 1px 100% no-repeat,
+    linear-gradient(#000, #000) left 0 top var(--win31-notch) / 100% 1px no-repeat,
+    linear-gradient(#000, #000) left 0 bottom var(--win31-notch) / 100% 1px no-repeat,
+    var(--win31-face);
+  font-family: var(--font-retro);
+  scroll-margin-top: var(--hero-bar-height, 2rem);
+}
+
+/* beveled 3D button face shared by the title bar and scrollbar controls */
+.win31__control-box,
+.win31__size-button,
+.win31__scroll-button,
+.win31__scroll-thumb {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: var(--win31-face);
+  box-shadow: inset -2px -2px var(--win31-shadow), inset 2px 2px #fff;
+  cursor: default;
+}
+.win31__scroll-button:active,
+.win31__scroll-thumb.is-dragging {
+  box-shadow: inset 1px 1px var(--win31-shadow);
+}
+
+/* black triangle glyphs for the size and scroll arrow buttons */
+.win31__size-button::before,
+.win31__scroll-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 6px;
+  background: #000;
+  transform: translate(-50%, -50%);
+}
+.win31__size-button--minimize::before,
+.win31__scroll-button--down::before { clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.win31__size-button--maximize::before,
+.win31__scroll-button--up::before { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+
+.win31__titlebar {
+  display: flex;
+  height: var(--win31-bar);
+  border: 1px solid #000;
+  background: var(--teal);
+}
+.win31__control-box {
+  flex: 0 0 var(--win31-bar);
+  border-right: 1px solid #000;
+  box-shadow: none;
+}
+.win31__control-box::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 4px;
+  background: #fff;
+  border: 1px solid #000;
+  box-shadow: 1px 1px var(--win31-shadow);
+  transform: translate(-50%, -50%);
+}
+.win31__title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: normal; /* the System font is bold by design */
+  letter-spacing: 0;
+}
+.win31__size-button {
+  flex: 0 0 var(--win31-bar);
+  border-left: 1px solid #000;
+}
+
+.win31__menubar {
+  display: flex;
+  gap: 1.1rem;
+  padding: 4px 8px;
+  border: 1px solid #000;
+  border-top: 0;
+  background: var(--win31-face);
+  color: #000;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.win31__body {
+  display: flex;
+  border: 1px solid #000;
+  border-top: 0;
+}
+.win31__viewport {
+  flex: 1;
+  min-width: 0;
+  height: 80vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-left: 24px; padding-right: 24px; padding-top: 12px; padding-bottom: 0;
+  background: var(--win31-client) url('../images/wp4034106.png') 0 0 / auto repeat;
+  background-size: 50%;
+  background-attachment: local; /* bricks scroll with the projects */
+  image-rendering: pixelated;
+  font-family: var(--font); /* retro font is for the window chrome only */
+  scrollbar-width: none; /* the native bar is replaced by .win31__scrollbar */
+}
+.win31__viewport::-webkit-scrollbar { display: none; }
+.win31__viewport > * { image-rendering: auto; } /* keep pixelated scaling on the bricks only */
+.win31__viewport:focus { outline: none; }
+.win31 .work__grid {
+  width: 100%;
+  margin-left: 0;
+}
+/* old-browser linked-image border; an inset outline so the masonry sizing is unaffected */
+.win31 .work__card:not(.work__card--text) {
+  outline: 2px solid var(--teal);
+  outline-offset: -2px;
+}
+
+.win31__scrollbar {
+  flex: 0 0 var(--win31-bar);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #000;
+}
+.win31__scroll-button { flex: 0 0 var(--win31-bar); }
+.win31__scroll-button--up { border-bottom: 1px solid #000; }
+.win31__scroll-button--down { border-top: 1px solid #000; }
+.win31__scroll-track {
+  position: relative;
+  flex: 1;
+  background: var(--win31-face);
+}
+.win31__scroll-thumb {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--win31-bar);
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  touch-action: none;
+}

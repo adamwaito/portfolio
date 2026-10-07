@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div>
+        <p class="admin-eyebrow">Portfolio editor</p>
+        <h1>Projects</h1>
+        <p class="admin-note">Changes are saved in this browser. Export a JSON backup when you are ready to move them elsewhere.</p>
+      </div>
+      <nav class="admin-actions" aria-label="Admin actions">
+        <a class="button button--quiet" href="index.html">View portfolio</a>
+        <button class="button button--quiet" id="export-projects" type="button">Export projects.json</button>
+        <label class="button button--quiet" for="import-projects">Import projects.json<input id="import-projects" type="file" accept="application/json"></label>
+        <button class="button button--quiet" id="export-galleries" type="button">Export galleries.json</button>
+        <label class="button button--quiet" for="import-galleries">Import galleries.json<input id="import-galleries" type="file" accept="application/json"></label>
+      </nav>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <label class="field-label" for="category-select">Section</label>
+        <select id="category-select"></select>
+        <button class="button button--primary" id="add-project" type="button">+ Add project</button>
+        <p class="field-label masonry-preview__label">Layout preview</p>
+        <div class="masonry-preview" id="masonry-preview" aria-hidden="true"></div>
+        <p class="admin-help">Use column 1–4, order, and span to art-direct the masonry layout. Leave column blank to auto-place a project in the shortest column.</p>
+        <p class="admin-help">Illustration cards each have their own <strong>Gallery</strong>; other sections share one <strong>Section gallery</strong>, opened at the project matching the clicked card's title. Gallery edits save automatically; export galleries.json to publish them.</p>
+      </aside>
+
+      <section class="admin-content" aria-live="polite">
+        <div class="project-list" id="project-list"></div>
+        <p class="empty-state" id="empty-state" hidden>No projects in this section yet.</p>
+      </section>
+    </div>
+  </main>
+  <script src="js/admin.js?v=7"></script>
+</body>
+</html>

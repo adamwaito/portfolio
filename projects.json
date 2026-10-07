@@ -1,0 +1,235 @@
+{
+  "webux": [
+    {
+      "title": "NEW AGE TAPE GENERATOR\nRandom weighted probability music and album title/artist/cover art generator,\nmusic player, and visualizer using Javascript and Web Audio API",
+      "image": "images/project_images/webux/NewAgeTapeGenerator/newagetapeanimation/newagetapeanimation_0000.webp",
+      "alt": "New Age Tape Generator",
+      "column": 2,
+      "order": 1,
+      "span": 3,
+      "scrollAnimation": {
+        "framePath": "images/project_images/webux/NewAgeTapeGenerator/newagetapeanimation/newagetapeanimation_",
+        "frameCount": 21,
+        "frameStart": 0
+      }
+    },
+    {
+      "title": "GOUACHE HYBRID VECTOR SYNTHESIZER\nVST3 and standalone softsynth instrument",
+      "image": "images/project_images/webux/GouacheSynth/Gouache-synth-preview.png",
+      "alt": "Gouache Hybrid Vector Synthesizer VSTi",
+      "column": 3,
+      "order": 2,
+      "span": 1
+    },
+    {
+      "title": "SPARKLINGWATER.LIFE\nExperimental website for electronic music project",
+      "image": "images/project_images/webux/SparklingWaterWebsite/sparkleweb1.jpg",
+      "alt": "SparklingWater.life",
+      "column": 4,
+      "order": 2,
+      "span": 1
+    },
+    {
+      "type": "text",
+      "content": "Interactive Design and Development is especially exciting because it offers opportunities to synthesize diverse design disciplines, modalities, and strategies from my toolkit. Motion design, typography, illustration, and even sound design can all be deployed and combined to solve particular problems, create engaging experiences, or simply to explore ideas.\n\nThrough a multifaceted design approach, I prioritize accessibility and creativity, focusing on mindful, meaningful, and memorable interactions rather than chasing purely frictionless design. Because where's the fun in that?",
+      "column": 1,
+      "order": 1,
+      "span": 1
+    },
+    {
+      "title": "DRIPCHECK\nProgressive web app for preventing frozen pipes in cold climates",
+      "image": "images/project_images/webux/dripcheck/DripCheckMockup.webp",
+      "alt": "",
+      "column": 1,
+      "order": 3,
+      "span": 2
+    },
+    {
+      "title": "ADAMWAITOISCOOL.COM",
+      "image": "images/project_images/webux/portfolio/screenshot.png",
+      "alt": "",
+      "column": 3,
+      "order": 3,
+      "span": 2
+    }
+  ],
+  "illustration": [
+    {
+      "title": "EDITORIAL",
+      "image": "images/project_images/illustration/editorial/OtisMagazine/otis_pogs_8rrr7tol8t.webp",
+      "alt": "Editorial",
+      "column": 1,
+      "order": 2,
+      "span": 2
+    },
+    {
+      "title": "POSTERS\nfor Concerts and Film Screenings",
+      "image": "images/project_images/illustration/posters/FilmPosters/royal_the_vanishing_poster_web_5ndc2avag6.webp",
+      "alt": "Posters",
+      "column": 4,
+      "order": 1,
+      "span": 1
+    },
+    {
+      "title": "COMICS",
+      "image": "images/project_images/illustration/comics/TIFF/fest_hacks_red_carp_4rub2cekbr.webp",
+      "alt": "Comics",
+      "column": 1,
+      "order": 2,
+      "span": 1
+    },
+    {
+      "title": "MUSIC MERCH",
+      "image": "images/project_images/illustration/other/CadenceWeapon/cadenceweapon_shopsocials_transparent_1024x1024_784t3ulzow.webp",
+      "alt": "Other",
+      "column": 2,
+      "order": 2,
+      "span": 1
+    },
+    {
+      "type": "text",
+      "content": "My professional transition from musician to designer can be traced to the gig poster. In the 2010s I ended up producing hundreds of them, mostly in the context of the Montreal music scene, and the show poster is an art form that is still very dear to my heart. From there I graduated to editorial illustrations, product design, hand drawn logos, training manuals, movie posters, comics, greeting cards, and about any other reason someone could want a drawing that you could imagine.\n\nHere's a very small selection of some drawings for diverse clients and purposes from over the years.",
+      "column": 3,
+      "order": 1,
+      "span": 1
+    },
+    {
+      "title": "STORYBOARDS",
+      "image": "images/project_images/illustration/storyboarding/Storyboards1.webp",
+      "alt": "",
+      "column": 3,
+      "order": 3,
+      "span": 1
+    },
+    {
+      "title": "ART FOR FILM/TV",
+      "image": "images/project_images/illustration/other/MileEndKicks/MileEndKicks.webp",
+      "alt": "",
+      "column": 3,
+      "order": 2,
+      "span": 1
+    }
+  ],
+  "layout": [
+    {
+      "title": "ARMADILLO AVALANCHE",
+      "image": "images/project_images/layout/ArmadilloAvalanche/armadillo1_1jvnq6if4f.jpg",
+      "alt": "Armadillo Avalanche",
+      "column": null,
+      "order": null,
+      "span": 1
+    },
+    {
+      "title": "BLACK-ISH",
+      "image": "images/project_images/layout/Black-ish/blackish1_uiaif2v7hp.jpg",
+      "alt": "Black-ish",
+      "column": null,
+      "order": null,
+      "span": 1
+    },
+    {
+      "title": "CORNER GAS ANIMATED",
+      "image": "images/project_images/layout/CornerGas/cornergas3_rhqoozimya.webp",
+      "alt": "Corner Gas",
+      "column": null,
+      "order": null,
+      "span": 1
+    },
+    {
+      "title": "DINO DEX",
+      "image": "images/project_images/layout/DinoDex/dinodex1_rk23mjrjol.webp",
+      "alt": "Dino Dex",
+      "column": null,
+      "order": null,
+      "span": 1
+    },
+    {
+      "title": "HOUSEBROKEN",
+      "image": "images/project_images/layout/Housebroken/housebrokenthumbnail_jdd5wxo0hs.jpg",
+      "alt": "Housebroken",
+      "column": null,
+      "order": null,
+      "span": 1
+    },
+    {
+      "title": "JEREMY AND JAZZY",
+      "image": "images/project_images/layout/JeremyAndJazzy/jeremyjazzy12_gmrve49j6z.webp",
+      "alt": "Jeremy and Jazzy",
+      "column": null,
+      "order": null,
+      "span": 1
+    },
+    {
+      "title": "PSI COPS",
+      "image": "images/project_images/layout/PsiCops/psicops1_an7auqh4kd.webp",
+      "alt": "Psi Cops",
+      "column": null,
+      "order": null,
+      "span": 1
+    },
+    {
+      "type": "text",
+      "content": "I've worked in the animation industry for about a decade as a Background Artist and Layout Supervisor. In these capacities I've worked on dozens of animated shows for networks like CTV, CBC, Adult Swim, PBS Kids, Fox, TVO, ABC, etc.",
+      "column": 3,
+      "order": 2,
+      "span": 1
+    },
+    {
+      "title": "WORDSVILLE",
+      "image": "images/project_images/layout/Wordsville/wordsville2_odiqdroi1r.webp",
+      "alt": "",
+      "column": 1,
+      "order": 3,
+      "span": 1
+    }
+  ],
+  "motion": [
+    {
+      "title": "BAR L'ESCO\nMotion graphics for L'Autel 4461 live music sessions",
+      "image": "images/project_images/motion/BarLEsco/lesco3_y2bka7ye4f.jpg",
+      "alt": "Bar L'Esco",
+      "column": 4,
+      "order": 1,
+      "span": 1
+    },
+    {
+      "title": "EQUINOX MUSIC VIDEO\nRetro CGI music video built in Unity",
+      "image": "images/project_images/motion/EquinoxVideo/equinox_es6rn4odr3.jpg",
+      "alt": "Equinox Video",
+      "column": 1,
+      "order": 1,
+      "span": 1
+    },
+    {
+      "title": "POETRY IN VOICE\nVideo poems and promo video",
+      "image": "images/project_images/motion/PoetryInVoice/LOGO.webp",
+      "alt": "Poetry In Voice",
+      "column": 3,
+      "order": 2,
+      "span": 1
+    },
+    {
+      "title": "UFC 25 YEARS IN SHORT\nAnimated documentary",
+      "image": "images/project_images/motion/UFC/ufc1_a2dwf7hu0g.webp",
+      "alt": "UFC",
+      "column": 3,
+      "order": 1,
+      "span": 1
+    },
+    {
+      "type": "text",
+      "content": "After over a decade as a designer, I've learned that motion is never just decoration. It sets a mood, guides attention, and gives personality to whatever it touches. The selected projects here range from brand animation to music videos. Each one was a chance to make images feel a little more alive.",
+      "column": 2,
+      "order": 2,
+      "span": 1
+    },
+    {
+      "title": "CRUX DESIGN+BUILD\nLogo animation",
+      "image": "images/project_images/motion/CRUX/Comp 1 (0-00-05-03).png",
+      "alt": "Crux Design and Build",
+      "column": 4,
+      "order": 2,
+      "span": 1
+    }
+  ]
+}

@@ -1,0 +1,1012 @@
+{
+  "webux": {
+    "projects": [
+      {
+        "name": "New Age Tape Generator",
+        "description": "http://newagetapegenerator.oksure.cc\n\nNew Age Tape Generator is a random weighted probability music and album title/artist/cover art generator, music player, and visualizer that uses JavaScript  (not AI!) to randomly combine hundreds of variables according to weighted rules and probabilities. In this way, it applies CSS styles and typographic variables to randomly selected artwork to create the album covers. Artwork and photos are drawn from images I curated from a number of 1990s stock image CD-ROMs preserved at the Internet Archive. The various possibilities for combinations of words, layouts, fonts, effects, etc were written and designed by me.\n\nSimilarly, the music is randomly combined from over a hundred original melodic, rhythmic, and textural loops I created in Ableton Live that are arranged according to weighted rules coded in JavaScript and processed in real-time via the Web Audio API graph, which is a powerful JavaScript based system for synthesizing and processing audio in web browsers.\n\nI thought it’d be a fun way to create and release music, tackle an interesting web development challenge, and pay homage to the weird and wonderful world of New Age music from the 1970s to 1990s, when independent visionaries and petite bourgeois opportunists both released scores of truly brilliant and sometimes baffling musical releases that promised inner harmony, spiritual transcendence, altered mental states, physical relaxation, and artistic inspiration. It’s both a nostalgic exploration of the visual, discursive, and sonic formulas embodied by New Age music releases, as well as a playful experiment to answer the very New Agey question: what if I left the final creative decision making up to the Universe?",
+        "images": [
+          {
+            "src": "images/project_images/webux/NewAgeTapeGenerator/newagetapegenerator_animated.webp",
+            "caption": "Animated demo"
+          },
+          {
+            "src": "images/project_images/webux/NewAgeTapeGenerator/newagetapegenerator_still.webp",
+            "caption": "Still"
+          }
+        ]
+      },
+      {
+        "name": "SparklingWater.life",
+        "description": "http://sparklingwater.life\n\nThis is a quirky website I built for my electronic music project Sparkling Water. It's custom static web experience with animated, free-floating SVG-clipped “blob” navigation. You can respawn the blobs to random positions for easier navigation and to create unique compositions. The interface blends generative motion, non-traditional information architecture, and immersive visual design. Internal content loads dynamically into a slide-in panel to keep users in a continuous visual environment. I'm thinking about adding some sort of built-in audio element but haven't gotten there yet. Technically, the site is built with semantic HTML, custom CSS, and vanilla JavaScript. It's a little janky, but so is Sparkling Water's music. And aren't we all?",
+        "images": [
+          {
+            "src": "images/project_images/webux/SparklingWaterWebsite/sparkleweb1.jpg",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Gouache Hybrid Vector Synthesizer",
+        "description": "Gouache Hybrid Vector Synthesizer is an open source VST softsynth I'm developing. It's a 16-voice, 4-source vector polyphonic synth (JUCE 9, WebView UI). Its architecture and sonic characteristics are inspired by a certain genre of digital synth that I love from the late 80s and early 90s that employs creative crossfading between 4 sound sources. In particular I drew inspiration from the Yamaha SY22 and Kawai K1, two synths that I own and love to use. Still, I didn’t set out to just create a simulacrum of an IRL synth, but something novel with uniquely inspiring features and limitations. Most importantly, I wanted to create something that I'd find useful in my own musical practice.\n\nOn the UI side, it was a fun challenge to avoid relying on menu-diving, and instead present as many of the controls in the main UI as possible, while keeping the layout clean and intuitive—at least for a synth nerd. I leaned away from the slate black brutalist design usually deployed by Gouache’s period forebears, and went for a lighter aesthetic with more in common with vintage computing and industrial or electronic medical equipment. The name and naive colour motif aim to inspire a sense of unrefined playfulness, and hint at the vast possibilities achieveable by blending a few humble elements.\n\nSources 1–2 are synth engines offering morphable saw/square, pulse/square, or sine waves, a 2-operator FM engine, or a quirky vocally-tuned wavetable-style source. Sources 3–4 are PCM samplers that can evoke 80s/90s romplers or deliver cleaner, modern sampled sounds. A joystick/XY pad blends the four sources, and a master section adds an envelope, filter, effects, and limiting.\n\nThe DADSR envelope is flexible enough to build complex, evolving patches, and can be assigned to the XY coordinates for per-note crossfades between sources. The two LFOs can also drive the XY coordinates for extra motion and sound design possibilities. AM modulation is available between S1 and S3 and between S2 and S4: the carrier's amplitude follows the modulating signal while its frequency stays fixed, producing sounds ranging from gritty, bell-like tones to discordant chaos.\n\nI'm still working out kinks, fleshing out the factory sample library, and adding features like user-generated samples, which would set Gouache apart from its vector synth ancestors. For far, I’m absolutely loving the way it works and sounds. Sound demo coming soon!\n",
+        "images": [
+          {
+            "src": "images/project_images/webux/GouacheSynth/Gouache-synth-preview.png",
+            "caption": "Plugin preview"
+          }
+        ]
+      },
+      {
+        "name": "DripCheck",
+        "description": "http://dripcheck.oksure.cc\n\nI live in a city that gets quite cold in the winter, and I live in an old house with old pipes. That means sometimes the pipes can freeze on the coldest days of the winter (for me it can happen when temperatures fall below 20℃.) Luckily, the old trick of letting faucets trickle during cold snaps is enough to prevent this from happening. Still, I sometimes forget to check the forecast and I wake up to frozen pipes and my dang taps don't work. So I created this little app with a very simple goal, which is to notify me when a period of cold below my set threshold is coming, so I can remember to drip my taps and avoid frozen (and potentially bursting) pipes. Did something so simple need to be an entire app with a bespoke hand-illustrated UI? Apparently yes.\n\nHow it works\n\nLocation-aware forecasts: DripCheck finds your location through the browser, or you can search for a city. It then pulls hourly temperatures from the Open-Meteo API and groups them into time-of-day periods.\n\nYour own threshold: You choose the temperature that counts as \"too cold\" (−30° to 0°, in °C or °F). Any period that reaches it gets flagged, and tapping it explains what to expect and how to drip your faucets.\n\nInstallable PWA: It's a Progressive Web App, so you can add it to your home screen on iPhone, Android or desktop and use it like a native app. A service worker keeps it working offline.\n\nPush notifications: A serverless backend on Cloudflare Workers and D1 stores each device's push subscription and settings. Every 15 minutes, a scheduled job checks the forecast in each user's local timezone and sends Web Push alerts (signed with VAPID keys). You pick which alerts you want: one per cold spell, a 7 a.m. daily summary, or a heads-up an hour before a cold period starts. The job tracks which alerts it has already sent, so you never get the same one twice.\n\nBuilt with: \nHTML, CSS and vanilla JavaScript\nService Workers and the Web Push API\nCloudflare Workers (cron triggers)\nCloudflare D1\nOpen-Meteo weather and geocoding APIs",
+        "images": [
+          {
+            "src": "images/project_images/webux/dripcheck/DripCheckMockup.webp",
+            "caption": "This mockup makes me laugh."
+          },
+          {
+            "src": "images/project_images/webux/dripcheck/DripCheckScreenshot.png",
+            "caption": "screenshot of app"
+          },
+          {
+            "src": "images/project_images/webux/dripcheck/DripCheckScreenshot2.png",
+            "caption": "screenshot of app (location is set to Argentinian Antarctic base for subzero testing purposes!)"
+          },
+          {
+            "src": "images/project_images/webux/dripcheck/DripCheckScreenshot3.png",
+            "caption": "screenshot of app"
+          },
+          {
+            "src": "images/project_images/webux/dripcheck/DripCheckScreenshot4.png",
+            "caption": "screenshot of app"
+          }
+        ]
+      },
+      {
+        "name": "ADAMWAITOISCOOL.COM",
+        "description": "http://adamwaitoiscool.com\n\nI designed and built this personal portfolio site in HTML, CSS and vanilla JavaScript, with no frameworks.\n\nI wanted my portfolio to be intuitive and easy to navigate, but I also wanted to break away from the sameness of cookie-cutter portfolio websites. My portfolio is very eclectic and multidisciplinary, so I wanted the design of the site to reflect that, while still feeling visually unified, and let the work itself be the main focal point. To that end of balancing unity and diversity, project cards sit at varying sizes in a custom masonry layout, unified by a greyscale, film-grain treatment that turns to full colour on hover, or on touch screens as each card scrolls into view. Each card opens a gallery with a thumbnail filmstrip and a project index. For a little bit of fun, the site is built around scroll-linked motion. The nav bubbles drift from a loose scatter on the landing page into a neat row as you scroll. Some of the section titles are animated too: variable-font weight and spacing shift as you move down the page, and the \"motion/animation\" heading travels along a wave.\n\nBehind the scenes, I built a small admin tool for arranging cards and managing galleries. It exports the content as JSON, so I can update the site without touching the code.\n\nSo there you have it.",
+        "images": [
+          {
+            "src": "images/project_images/webux/portfolio/screenshot.png",
+            "caption": ""
+          }
+        ]
+      }
+    ]
+  },
+  "illustration": {
+    "comics": {
+      "projects": [
+        {
+          "name": "TIFF: Fest Hacks",
+          "description": "The Toronto International Film Festival hired me to create a comic strip in 2016 for their blog, so I created Fest Hacks, a satirical guide to making the most of TIFF, especially parts involving schmoozing and meeting \"celebs.\" Its episodes were featured on big screens on the TIFF Bell Lightbox red carpet. Here's Episode 1! Bonus: a completely absurd comic of (imaginary) deleted scenes from David Lynch's Blue Velvet, also inexplicably commissioned from me by TIFF.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/comics/TIFF/fest_hacks_1_shpkrk78tr.webp",
+              "caption": "Fest Hacks"
+            },
+            {
+              "src": "images/project_images/illustration/comics/TIFF/fest_hacks_red_carp_4rub2cekbr.webp",
+              "caption": "Fest Hacks: red carpet"
+            },
+            {
+              "src": "images/project_images/illustration/comics/TIFF/tiff_blue_velvet_deleted_scenesv2_j7myzvlst6.webp",
+              "caption": "Blue Velvet: deleted scenes"
+            }
+          ]
+        },
+        {
+          "name": "On The UP Magazine",
+          "description": "A nostalgic travelogue comic for On The UP Magazine, the official magazine of the UP Express train.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/comics/OnTheUPMagazine/ontheup1_d1498hwqtd.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/comics/OnTheUPMagazine/ontheup2_heq1gp8pu6.webp",
+              "caption": ""
+            }
+          ]
+        },
+        {
+          "name": "Tourvan",
+          "description": "Tourvan was a comic strip I produced for Vice in 2015 about a hapless Canadian indie band struggling to make it while keeping it real. I later released it as a risograph-printed minicomic. Since the original articles are mostly broken on the Vice website, you can check out all the episodes archived on (where else?) tumblr: https://tourvancomic.tumblr.com/",
+          "images": [
+            {
+              "src": "images/project_images/illustration/comics/Tourvan/tourvan_congeniality_web_wwd0i7ktgq.webp",
+              "caption": "Congeniality Decoded"
+            },
+            {
+              "src": "images/project_images/illustration/comics/Tourvan/tourvan_i_wish_i_was_dead_web1_gqu3ibl63j.webp",
+              "caption": "I Wish I Was Dead"
+            },
+            {
+              "src": "images/project_images/illustration/comics/Tourvan/tumblr_1785c182c368c2ab9ab0853aff8f33dd_2b59ee98_1280.jpg",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/comics/Tourvan/tourvan_indie_bros_web_jbhva7cgkc.webp",
+              "caption": "Indie Bros"
+            },
+            {
+              "src": "images/project_images/illustration/comics/Tourvan/tourvan4_dm5fk5f282.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/comics/Tourvan/tourvan3_fnqh1ckd35.webp",
+              "caption": ""
+            }
+          ]
+        }
+      ]
+    },
+    "editorial": {
+      "projects": [
+        {
+          "name": "Munchies",
+          "description": "One of my absolute favourite things to draw is food, so it was so fun contributing illustrations to Munchies over the years.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_back_of_the_box_recipes_1_l4dusfa8tu.webp",
+              "caption": "How Back-of-the-Box Recipes Became Beloved Comfort Foods for So Many Americans"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_yemen_composite_1_w6kloejkb8.webp",
+              "caption": " What Yemen Can Teach America About Hospitality"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_science_secret_sauce2_wfi8iymnzs.webp",
+              "caption": "The Weird Science Behind Chain Restaurant Menus"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_occult_spaghetti1_v8ok9gxso6.webp",
+              "caption": "The Occult Ingredients in Your Plate of Spaghetti"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_old_country_buffet_9be4lbxvo8.webp",
+              "caption": " The Old Country Buffet Was My Immigrant Father's American Dream"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_berghain_ice_cream_1_r0ewim32r4.webp",
+              "caption": " Inside Berghain's Shockingly Good Ice Cream Parlor"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_epic_meal_time_3l52g4nwlo.webp",
+              "caption": "History of Epic Meal Time"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_alphonso_mangoes_6_brighter_1gi44dkb3v.webp",
+              "caption": "Alphonso Mangoes"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_foregoing_intimacy_v2_0lmwwhbyd6.webp",
+              "caption": " How Tinder Is Killing the Home-Cooked Dinner Date"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Munchies/munchies_parents_cooking_rgzm9xmeu8.webp",
+              "caption": "The Realization That Your Parents' Cooking Kind of Sucks"
+            }
+          ]
+        },
+        {
+          "name": "October Magazine",
+          "description": "October was a digital beer and culture publication launched in 2017 by Pitchfork/Conde Naste in partnership with ZX Ventures, an incubator owned by AB InBev.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct01_st1jflwtl5.webp",
+              "caption": "Beer and Pizza Pairings"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct2_qx8ahc4auq.webp",
+              "caption": "The Rise of Beer Flavored Beer"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct3_nt86nlvb8u.webp",
+              "caption": "October Magazine"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct4_r4v1fr32i1.webp",
+              "caption": "Self Care and Beer"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct5_5vffbytaei.webp",
+              "caption": "October Magazine"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct8_rcf1oufdxw.webp",
+              "caption": "The Five Different Kinds of Craft Beer Drinkers"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct9_tzh5n91pjw.webp",
+              "caption": "October Magazine"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct6_gdrxhim5kh.webp",
+              "caption": "Beer Tarot"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct7_mrv6hc5hne.webp",
+              "caption": "Beer Tarot"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct10_1razg5cc3w.webp",
+              "caption": "Beer Tarot"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct11_iim73jj0mk.webp",
+              "caption": "Beer Tarot"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OctoberMagazine/oct12_xn9ni8qvtj.webp",
+              "caption": "Beer Tarot"
+            }
+          ]
+        },
+        {
+          "name": "Otis Magazine",
+          "description": "Otis Magazine was a publication about investing in collectables.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/editorial/OtisMagazine/otis_pogs_8rrr7tol8t.webp",
+              "caption": "Remembering POGs"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OtisMagazine/otis_sports_cards_z6fel238v5.webp",
+              "caption": "How Sports Cards Got Cool Again"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OtisMagazine/otis_86_fleer_o2xlaucv7y.webp",
+              "caption": "Would the Rookies from the 1986 Fleer Basketball Set Be the Greatest Team of All Time?"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OtisMagazine/otis_johnny_ghe65akfxh.webp",
+              "caption": "The ’86-87 Fleer Basketball Set and the Story of Johnny Moore"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/OtisMagazine/otis_single_issue_comics_v2_1_m3w9ejojhv.webp",
+              "caption": "Why Comics As We Know Them Might Soon Be a Thing of the Past"
+            }
+          ]
+        },
+        {
+          "name": "Vice Magazine",
+          "description": "Aw, Vice--the sometimes brilliant, oftentimes problematic, flagship publication of the bygone hipster era. It's also where I got my start doing editorial illustrations, based on my gig poster work. Here are a few illustrations from that time that I still like!",
+          "images": [
+            {
+              "src": "images/project_images/illustration/editorial/Vice/vice1_k5r4h3coq5.webp",
+              "caption": "The First Fentanyl Addicts"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Vice/vice2_0e5h240bdx.webp",
+              "caption": "Every Type of Drunk You Will Get in Your Entire Life"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Vice/vice3_g5wkbbzh4o.webp",
+              "caption": "The Lonely Dudes Using ‘Magick’ to Get Laid"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Vice/vice5_ov4jonc5ps.webp",
+              "caption": "My Experience Using Hook-up Apps in Qatar, Where Gay Sex Is Punishable by Death"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Vice/vice6_ye1752oim6.webp",
+              "caption": "Five People on Different Drugs Enter an Escape Room: Can They Survive?"
+            },
+            {
+              "src": "images/project_images/illustration/editorial/Vice/vice4_347q4r3w88.webp",
+              "caption": "How I Learned to Love the Tragically Hip and Still Be Punk"
+            }
+          ]
+        }
+      ]
+    },
+    "posters": {
+      "projects": [
+        {
+          "name": "Film Posters",
+          "description": "I love movies and I love drawing movie posters. I'm very fortunate living in Toronto to have some amazing independent cinemas that show all sorts of old and new films. Here are just a few of the posters I've done promoting screenings at the Revue Cinema and Royal Cinemas over the years.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/revue_cinema_ziggy_stardust_poster_web_jku138g4ff.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/revue_ziggy_stardust_2024_poster_web_0rbgcr21bb.jpg",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/ROYAL-the-man-who-fell-to-earth-poster-web.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/alucarda_poster_royal_cinema_web_isrc4o7yya.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/beyond_the_valley_of_the_dolls_poster_web_ulrzvxp5it.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/royal_the_vanishing_poster_web_5ndc2avag6.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/revue_its_all_gone_pete_tong_poster_v3_web_5yds2ekej0.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/royal_altered_states_poster_web_zuvgbcrpzk.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/royal_god_told_me_to_poster_web_7ak23n1xgc.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/royal_bigger_than_life_poster_web_ng69l2jdg6.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/royal_changeling_poster_web_2fxomilfmo.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/royal_fantastic_planet_poster_web_113gnjazy0.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/FilmPosters/royal_paris_texas_poster_web_joqwta2mnu.webp",
+              "caption": ""
+            }
+          ]
+        },
+        {
+          "name": "Gig Posters",
+          "description": "A lifetime ago I was a busy struggling musician, touring and recording in various Montreal indie bands. This eventually lead me to getting a job with a concert promoter, which lead to me creating hundreds of concert posters over the span of a few years. This body of work provided me with the portfolio and exposure (my work was literally plastered everywhere for a while) to start getting gigs doing other kinds of illustration.  Here's a very small selection of those posters.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/screen_shot_2016_06_08_at_2_08_53_am_dd4226v2uu.png",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/mac_demarco_poster_2015_web_5mvq2xq2sb.jpg",
+              "caption": "Mac DeMarco poster, 2015"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/mac_demarco_nov5_poster_web_srq422zqan.webp",
+              "caption": "Mac DeMarco poster, Nov 5"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/tumblr_nc076zQJoQ1r6eimyo1_1280.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/chelsea_light_moving_poster_web_73ord1kcil.jpg",
+              "caption": "Chelsea Light Moving poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/dan_deacon_poster_revised_web_o7fovwvfvt.webp",
+              "caption": "Dan Deacon poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/bass_drum_poster_2014_web_odryw5nsym.jpg",
+              "caption": "Bass Drum poster, 2014"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/screen_shot_2016_06_08_at_2_10_06_am_9gsvbsm6n2.png",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/screen_shot_2016_06_08_at_2_13_32_am_ozahj6kthk.png",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/together_pangea_poster_web_ubwqbqhvm9.jpg",
+              "caption": "Together Pangea poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/tumblr_mz63wd3bBb1r6eimyo1_500.jpg",
+              "caption": "Yuck Poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/chad_vangaalen_poster_web_p6vfhvspu8.jpg",
+              "caption": "Chad VanGaalen poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/nap_eyes_poster_web_u7azlypdld.jpg",
+              "caption": "Nap Eyes poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/canzine_poster_2017_no_info_smaller_1cr7ouwlzn.gif",
+              "caption": "Canzine poster, 2017"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/islands_poster_web_xcsk8d1rbg.jpg",
+              "caption": "Islands poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/tumblr_nwwkjvhfTY1r6eimyo1_1280.jpg",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/andy_shauf_chris_cohen_tour_poster_mockup_zt8eoop7qj.webp",
+              "caption": "Andy Shauf & Chris Cohen tour poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/pop_mtl_2013_divan_web_txtosibz64.jpg",
+              "caption": "POP Montreal 2013, Divan Orange"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/screen_shot_2016_06_08_at_2_11_52_am_gw79nd1aed.png",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/screen_shot_2016_06_08_at_2_12_06_am_o44ley24b4.png",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/holy_sons_poster_web_i9kdtlxsbl.webp",
+              "caption": "Holy Sons poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/surf_curse_poster_webv3_3yejk0pfy0.webp",
+              "caption": "Surf Curse poster"
+            },
+            {
+              "src": "images/project_images/illustration/posters/GigPosters/tumblr_n7a1nx2Emn1r6eimyo1_500.jpg",
+              "caption": ""
+            }
+          ]
+        }
+      ]
+    },
+    "storyboards": {
+      "projects": [
+        {
+          "name": "The Highway",
+          "description": "I had the great pleasure of storyboarding The Highway (2026), a short thriller film by award-winning filmmaker Yung Chang. It was shot on location in Chongqing, China, and stars \"Queen of Chinese art-house film\" Huang Lu. It was amazing to see it brought to life on the big screen when it premiered at TIFF. Here are a few sample panels (several of which didn't make it into the film, so don't consider these spoilers).",
+          "images": [
+            {
+              "src": "images/project_images/illustration/storyboarding/Highway_sheep_sequence_Storyboard_v03-hi-1.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/storyboarding/Highway_sheep_sequence_Storyboard_v03-hi-2.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/storyboarding/Highway_sheep_sequence_Storyboard_v03-hi-3.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/storyboarding/Highway_sheep_sequence_Storyboard_v03-hi-4.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/storyboarding/Highway_sheep_sequence_Storyboard_v03-hi-11.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/storyboarding/Highway_sheep_sequence_Storyboard_v03-hi-12.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/storyboarding/Highway_sheep_sequence_Storyboard_v03-hi-13.webp",
+              "caption": ""
+            }
+          ]
+        }
+      ]
+    },
+    "music merch": {
+      "projects": [
+        {
+          "name": "Andy Shauf",
+          "description": "Collaborated on a few projects with Andy Shauf over the years, including merch design and tour posters.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/other/AndyShauf/img_1873_wb7vm5lqsg.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/AndyShauf/andy_shauf_chris_cohen_tour_poster_mockup_ozuat8fhsq.webp",
+              "caption": "Andy Shauf & Chris Cohen tour poster"
+            },
+            {
+              "src": "images/project_images/illustration/other/AndyShauf/andy_sweatshirt_n6ombxg7qe.webp",
+              "caption": "Andy Shauf sweatshirt"
+            },
+            {
+              "src": "images/project_images/illustration/other/AndyShauf/screen_shot_2017_05_25_at_2_06_03_pm_onghmqpdcd.webp",
+              "caption": ""
+            }
+          ]
+        },
+        {
+          "name": "Cadence Weapon",
+          "description": "It was really fun to collaborate with Cadence Weapon on the elaborate album art for his 2018 self-titled LP, drawing inspiration from overly-busy hand-drawn album covers from decades past, and working in about a thousand of his lyrical references, inside jokes, and friends into the artwork. I even worked myself and my then-baby daughter into the mix. All drawn with a Pentel pocket brush and India ink before being scanned and coloured digitally.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/other/CadenceWeapon/cadence_weapon1_ipdmekuvd1.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/CadenceWeapon/cadence_weapon2_tvtkgzcco5.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/CadenceWeapon/cadence_weapon3_w5e19nuw34.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/CadenceWeapon/cadenceweapon_shopsocials_transparent_1024x1024_784t3ulzow.webp",
+              "caption": "Cadence Weapon shop graphic"
+            }
+          ]
+        },
+        {
+          "name": "Sparkling Water",
+          "description": "I designed the artwork and packaging for the two physical releases of my current electronic music project, Sparkling Water. \n\nRoutine Gives Me the Space to Dream was released on tape by San Francisco's Dream Chimney Records in Spring 2025, and in Spring 2026 I released Lake Trout EP and launched it as a Japan-exclusive cassette with an in-store performance at Kankyo Records in Tokyo.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/other/SparklingWaterTapes/RGMTSTD_Tape.jpg",
+              "caption": "Routine Gives Me the Space to Dream cassette design"
+            },
+            {
+              "src": "images/project_images/illustration/other/SparklingWaterTapes/RGMTSTD_TapeCover.jpg",
+              "caption": "Routine Gives Me the Space to Dream cassette design"
+            },
+            {
+              "src": "images/project_images/illustration/other/SparklingWaterTapes/SPARKLING-WATER-RGMTSTD-for-streaming.webp",
+              "caption": "Routine Gives Me the Space to Dream artwork for streaming services"
+            },
+            {
+              "src": "images/project_images/illustration/other/SparklingWaterTapes/LakeTroutEP_Tape.jpg",
+              "caption": "Lake Trout EP cassette design"
+            },
+            {
+              "src": "images/project_images/illustration/other/SparklingWaterTapes/LakeTroutEP_Tape2.jpg",
+              "caption": "Lake Trout EP cassette design"
+            },
+            {
+              "src": "images/project_images/illustration/other/SparklingWaterTapes/LakeTroutEP_Square.jpg",
+              "caption": "Lake Trout EP artwork for streaming services"
+            }
+          ]
+        },
+        {
+          "name": "ST 37/Acid Mothers Temple split 12\"",
+          "description": "This was cool. I originally created this image in 2015 for the poster promoting a Montreal concert featuring iconic psych rock bands Acid Mother's Temple and ST 37, from Japan and Texas, respectively. I chose the subject matter basically to amuse myself because I love Twin Peaks and the X-Files and I just wanted to see agents Cooper and Mulder kiss, but the bands really loved it. Later, when the two bands were preparing to release a limited-edition split 12\" EP of Twin Peaks soundtrack covers, they asked me to license the image from the poster for the ST 37 side of the vinyl release. Such a fun an serendipitous collaboration and I still cherish my copy of this record :)",
+          "images": [
+            {
+              "src": "images/project_images/illustration/other/ST37/ST37Split.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/ST37/ST37Cover.webp",
+              "caption": ""
+            }
+          ]
+        }
+      ]
+    },
+    "art for film/tv": {
+      "projects": [
+        {
+          "name": "The Great Canadian Baking Show",
+          "description": "Here are a few of the illustrations of competitors' bakes that I worked on that were featured on Season 8 of The Great Canadian Baking Show for CBC Television, supervised by the immensely talented Alex Bayless. I also worked on Season 10, which premieres Oct 4 on CBC.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/other/BakingShow/bakingshow1_5tlqgzcjjb.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/BakingShow/bakingshow4_kqqxxouu3f.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/BakingShow/bakingshow2_2sfyi1e44d.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/BakingShow/bakingshow3_u4sccc2ai8.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/BakingShow/bakingshow5_6aguf1xijm.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/BakingShow/bakingshow6_s6vhmsgtl4.webp",
+              "caption": ""
+            }
+          ]
+        },
+        {
+          "name": "Mile End Kicks",
+          "description": "I guess there comes a time in every artist's life when a filmmaker approaches you because they're making a period piece set in the exact neighborhood and cultural scene where you spent your 20s and they want you to reproduce the sort of artwork you were doing at the time for the film to make it feel period accurate? No?\n\nNot gonna lie, this was a bit trippy to work on, but also really fun! And I think Chandler Levack is a great filmmaker and her movie is really funny and sad and sweet, and captures some vivid truths about a particular youthful Ontario-expat experience of a specific moment in Montreal's music scene, in a way that will resonate with a lot of people.\n\nThey hired me to design the fictional band's logo and merch, gig posters and flyers, plus murals for the problematic love interest's terrifying bedroom and for the main loft party space (based on a real loft where I rented rehearsal space for a while). They also licensed a bunch of my actual \"historic\" gig posters from the exact time period the film is set in and put them up on poles all over the neighborhood.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/bone-patrol-EP-v2.webp",
+              "caption": "Bone Patrol CD cover"
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/bone-patrol-logo-green.webp",
+              "caption": "Bone Patrol Logo"
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/E94E8A37-1C9D-4EC3-BF55-092632B79E50.jpeg",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/MileEndKicks_Mural.webp",
+              "caption": "Terrifying mural in Chevy's room"
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/MileEndKicks_Mural2.webp",
+              "caption": "WIP"
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/kiss_mural.webp",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/DJ night flyer 3 print.png",
+              "caption": "Flyer for Madeleine's DJ night"
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/DJnightFlyer.jpg",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/MileEndKicks_DJbackdrop.webp",
+              "caption": "Mural for the fictionalized Torn Curtain loft space"
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/MileEndKicks_DJbackdrop2.jpg",
+              "caption": ""
+            },
+            {
+              "src": "images/project_images/illustration/other/MileEndKicks/Cineplex_display.webp",
+              "caption": "Mile End Kicks display at Cineplex Cinemas Yonge-Dundas in Toronto featuring a number of my designs "
+            }
+          ]
+        },
+        {
+          "name": "McDonalds",
+          "description": "I designed some 2D props for a McDonalds commercial where the Hamburgler steals menu items from around the world.",
+          "images": [
+            {
+              "src": "images/project_images/illustration/other/McDonalds/McDMap.png",
+              "caption": "Vintage Hamburgler world map"
+            },
+            {
+              "src": "images/project_images/illustration/other/McDonalds/McDPlayingCard.png",
+              "caption": "Hamburgler playing card graphics"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "layout": {
+    "projects": [
+      {
+        "name": "Armadillo Avalanche",
+        "description": "It was a real pleasure and privilege to work as Layout Supervisor and Background Artist on Armadillo Avalanche, a series of digital shorts for Marble Media. The amazing Paul Hammond was concept artist.",
+        "images": [
+          {
+            "src": "images/project_images/layout/ArmadilloAvalanche/armadillo1_1jvnq6if4f.jpg",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/ArmadilloAvalanche/armadillo2_0paztxwajq.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/ArmadilloAvalanche/armadillo3_3jhjmomd7n.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/ArmadilloAvalanche/armadillo4_knbe69puro.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/ArmadilloAvalanche/armadillo5_aq3wbrpdc5.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/ArmadilloAvalanche/armadillo6_uurxdo2djf.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Black-ish",
+        "description": "I was Location Designer/Layout Artist for Black-ish “Election Special Pt. 2” for ABC Television. During COVID 19 lockdown in 2020, a lot of live-action shows had to stop production. Animated specials like this were a way to make new episodes remotely!",
+        "images": [
+          {
+            "src": "images/project_images/layout/Black-ish/blackish1_uiaif2v7hp.jpg",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/Black-ish/blackish2_nh844jue1u.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/Black-ish/blackish3_hhsacyw0pg.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/Black-ish/blackish4_nq267oywzg.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "CORNER GAS ANIMATED",
+        "description": "My entry point into the animation industry was working as Layout Artist on award-winning animated sitcom Corner Gas Animated Seasons 2, 3, and 4 for CTV Comedy/Crave and IMDB TV, a wonderful experience.",
+        "images": [
+          {
+            "src": "images/project_images/layout/CornerGas/cornergas1_elpekizo5v.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/CornerGas/cornergas2_0n9gs2btxp.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/CornerGas/cornergas3_rhqoozimya.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/CornerGas/cornergas4_ww4rkkfxk1.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/CornerGas/cornergas5_grgrkpgglw.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/CornerGas/cornergas6_vja62rcsm6.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Dino Dex",
+        "description": "Being Layout Artist/Background Painter on Dino Dex for TVOKids was fun because I got to develop two very distinct styles for the episodes, 'Dino World' and 'Dino Bodies.'",
+        "images": [
+          {
+            "src": "images/project_images/layout/DinoDex/dinobodies1_k8srh03trj.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/DinoDex/dinobodies2_ix3gu5zwvv.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/DinoDex/dinobodies3_9l4cwckx8g.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/DinoDex/dinobodies4_qmos20szzk.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/DinoDex/dinodex1_rk23mjrjol.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/DinoDex/dinodex2_nokgs0jif5.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/DinoDex/dinodex3_bxrhod0k82.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Housebroken",
+        "description": "In a coproduction between Smiley Guy (TO) and Bento Box (LA) I was Assistant Layout Supervisor and Background Artist on Housebroken for Fox, a very funny animal sitcom with an insanely stacked comedic voice cast.",
+        "images": [
+          {
+            "src": "images/project_images/layout/Housebroken/housebroken1_1t15p6muoj.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/Housebroken/housebroken2_6knghuarth.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/Housebroken/housebroken3_953i7y64xc.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Jeremy and Jazzy",
+        "description": "I was Layout Artist on Jeremy & Jazzy, a musical kids show for CBC. Beautiful art direction by Paul Hammond.",
+        "images": [
+          {
+            "src": "images/project_images/layout/JeremyAndJazzy/jeremyjazzy1_3cry9i0gg2.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/JeremyAndJazzy/jeremyjazzy12_gmrve49j6z.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Psi Cops",
+        "description": "I was 3D layout artist on PSI COPS, a totally bonkers paranormal cop show for Adult Swim. The show’s look was achieved using a combination of Daz 3D Studio, a pretty awkward piece of software that isn’t typically used for TV, and Photoshop, in keeping with the vibe of the creators’ quirky and lo-fi pilot.",
+        "images": [
+          {
+            "src": "images/project_images/layout/PsiCops/psicops1_an7auqh4kd.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/PsiCops/psicops2_r8inl0mt0f.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "WORDSVILLE",
+        "description": "I had the pleasure of acting as Layout Supervisor, Location Designer, and Background Artist on Wordsville for TVOKids. Here are some of the backgrounds I created for the show. I especially loved getting to develop the this look.",
+        "images": [
+          {
+            "src": "images/project_images/layout/Wordsville/wordsville2_odiqdroi1r.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/Wordsville/wordsville1_9sts70tf7i.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/Wordsville/wordsville3_u35fyqrsc6.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/layout/Wordsville/wordsville4_9fia6cyx6z.webp",
+            "caption": ""
+          }
+        ]
+      }
+    ]
+  },
+  "motion": {
+    "projects": [
+      {
+        "name": "Sparkling Water \"Equinox\" Music Video",
+        "description": "I sometimes release electronic music as Sparkling Water, and in 2025 I released an album called Routine Gives Me the Space to Dream on San Francisco-based label Dream Chimney. Making this video for the track \"Equinox\" was a great opportunity to figure out how to use Unity. The track took a lot of inspiration from old new age/library music, so I thought it would pair well with an aesthetic of early computer animation from the 80s/90s. I tried to evoke the kinds of visuals I remembered from VHS tapes I would obsess over as a kid that had titles like \"Computer Animation Celebration\" and \"Beyond the Mind's Eye,\" and I was pretty happy with the result considering I'd never used the software before.",
+        "images": [
+          {
+            "src": "images/project_images/motion/EquinoxVideo/equinox_es6rn4odr3.jpg",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "https://youtu.be/55zZlnABMfc?si=NK-WSt5iETNnGMw1",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Poetry In Voice / Les voix de la poésie",
+        "description": "Poetry in Voice/Les voix de la poésie is a really cool Montreal-based charity organization dedicated to poetry education for Canadian youth through reading, writing, and recitation. I've had the good fortune to work with them in diverse ways over the years, including making some animated videos geared towards kids and young people to accompany poems read out loud by their authors. Here are a few samples.",
+        "images": [
+          {
+            "type": "video",
+            "src": "https://youtu.be/5UjI75Y70fQ?si=TREK-IVywXFH6qfu",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "https://youtu.be/ZH61JDunxYg?si=q2rJOMRoqFQjUzKr",
+            "caption": ""
+          },
+          {
+            "src": "https://youtu.be/Cki5gMAMHew?si=5FlSvPnl1Dk-4FFj",
+            "caption": "",
+            "type": "video"
+          },
+          {
+            "type": "video",
+            "src": "https://youtu.be/RVIX0addQL0?si=Yx0PF7tsskk2obV8",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "UFC 25 Years in Short",
+        "description": "UFC 25 Years in Short is a 25-part documentary series celebrating the UFC silver anniversary. Can't say I'm a big UFC head, but it sure was fun helping out Academy Award-winning animator James Braithwaite and Picnic Dinner to create this hilarious and interesting short film in 2018. I got to rotoscope Chuck Norris and I snuck my name onto a dumpster!",
+        "images": [
+          {
+            "type": "video",
+            "src": "https://youtu.be/N43v7mXF1JE?si=vdm8wleEHzaqMe2z",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc2_lw5j3ifg4r.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc3_3s7qe17qsx.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc4_r1nq94vanw.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc5_49etdomya8.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc6_ufegbkhldx.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc8_bm75onxu05.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc10_w1fgmwmpgd.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc12_janz38sbq4.webp",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/UFC/ufc13_0ly9ctbbs9.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Bar L'Esco L'Autel 4461",
+        "description": "Bar L'Escogriffe is a gem of a small music venue in Montreal that I'd played at a few times over the years, and I had a blast designing motion graphics for their L'Autel 4461 video series of live music sessions. It was a really fun challenge to adapt the look of the eclectic set designs into punchy animated illustrations and textual assets that meshed seamlessly with L'Esco's unique vibe.",
+        "images": [
+          {
+            "src": "images/project_images/motion/BarLEsco/lesco2_12n6kugcuf.jpg",
+            "caption": ""
+          },
+          {
+            "src": "images/project_images/motion/BarLEsco/lesco3_y2bka7ye4f.jpg",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "https://youtu.be/CpFje3ODpic?si=8luN3U927_hYv9GZ",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "https://youtu.be/Csx--LsLYro?si=_dUc2KRvPYRJREOM",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "https://youtu.be/cxjIl1qsvzU?si=8BzT7F6_NNGyho71",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "name": "Crux Design+Build",
+        "description": "Crux is a Toronto design and fabrication studio that builds for film, television, commercials, and experiential marketing. I've worked with them in a few roles, most often on the set dressing crew for commercial shoots, and over time they've become a second family to me. So when it came to designing the opening animation for their website, I wanted it to do more than look cool. It had to show their range: design, carpentry, 3D printing, millwork, sculpting, art direction, and just about any kind of making you can dream up to solve a problem. The logo animation is built to reflect that versatility. It begins with a sketch, and then gets fleshed out and built piece by piece from different materials.",
+        "images": [
+          {
+            "src": "images/project_images/motion/CRUX/CRUXlogoAnim.mp4",
+            "caption": "",
+            "type": "video"
+          }
+        ]
+      }
+    ]
+  }
+}

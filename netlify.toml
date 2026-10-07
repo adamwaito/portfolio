@@ -1,0 +1,13 @@
+# Netlify publishes only the dist/ folder, which the build fills with an
+# allowlist of public files, so admin.html, admin.js/css and anything else
+# not listed here never goes live. Add new top-level files or folders here.
+[build]
+  publish = "dist"
+  command = """
+    rm -rf dist && mkdir -p dist/js dist/css &&
+    cp index.html projects.json galleries.json dist/ &&
+    cp -R images fonts dist/ &&
+    cp js/script.js dist/js/ &&
+    cp css/style.css css/win31.css dist/css/ &&
+    find dist -name .DS_Store -delete
+  """
