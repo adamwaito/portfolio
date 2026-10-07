@@ -421,6 +421,22 @@ h1, h2, h3, h4 { margin: 0; }
   break-inside: avoid;
   margin-bottom: .45rem;
 }
+
+/* tablets: centre the clients block, give it more of the width and bigger text */
+@media (min-width: 721px) and (max-width: 1024px) {
+  .about__clients {
+    left: 0;
+    max-width: 88vw;
+    margin: 0 auto;
+    padding: 0 0 5rem;
+  }
+  .about__clients-list {
+    column-gap: 2.4rem;
+    font-size: .8rem;
+    line-height: 1.15;
+  }
+  .about__clients-list li { margin-bottom: .55rem; }
+}
 /*
 .about__clients-list li::before {
   content: '•';
@@ -539,6 +555,9 @@ h1, h2, h3, h4 { margin: 0; }
   }
   /* auto margins centre short text but, unlike align-items: center, never clip long text at the top */
   .work__card--text span { margin-block: auto; }
+  /* the narrow 4-column cards need smaller title labels (extra class so it beats
+     the base .work__card-label rule further down) */
+  .work__card .work__card-label { font-size: .8rem; }
 }
 
 .work__card--text span {
