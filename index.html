@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/mzg2rzz.css">
 
-  <link rel="stylesheet" href="css/style.css?v=25">
+  <link rel="stylesheet" href="css/style.css?v=26">
   <!-- WIN31: Windows 3.1 window styles for the web/dev/UX section (switched off) -->
   <!-- <link rel="stylesheet" href="css/win31.css"> -->
 </head>
@@ -35,7 +35,7 @@
       </h1>
 
       <div class="hero__tagline">
-        <p class="hero__blurb">I tell impactful stories, design mindful interactions, and solve diverse problems through web, UX, print, motion design and illustration.</p>
+        <p class="hero__blurb">I like to tell impactful stories, design mindful interactions, and solve diverse problems through web, UX, print, motion design and illustration.</p>
       </div>
     </div>
   </header>
@@ -279,5 +279,13 @@
   </footer>
 
   <script src="js/script.js?v=15"></script>
+  <!-- demo-video auto-scroll: only loads with ?demo in the URL, and js/demo-scroll.js is never deployed -->
+  <script>
+    if (new URLSearchParams(location.search).has('demo')) {
+      const demo = document.createElement('script');
+      demo.src = 'js/demo-scroll.js';
+      document.body.append(demo);
+    }
+  </script>
 </body>
 </html>

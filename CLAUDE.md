@@ -10,6 +10,7 @@ Static personal portfolio: plain HTML, CSS and vanilla JS, with no framework, bu
 - `projects.json`: the work cards, keyed by category (`webux`, `illustration`, `layout`, `motion`). Each card has a title (first line is the name; later lines are the subtitle), image, column, order and span. Text cards have `"type": "text"`. A card can have a `scrollAnimation` (frame path, frame count, start frame).
 - `galleries.json`: gallery modal content. Illustration has one gallery per subcategory, keyed by the lowercased first line of the card title (`editorial`, `music merch`, …). The other categories have one `projects` gallery, and a card opens it at the project whose name best matches the card title.
 - `admin.html` + `js/admin.js` + `css/admin.css`: local-only editor for both JSON files. Not deployed.
+- `js/demo-scroll.js`: auto-scroll for recording demo videos (open `index.html?demo`, press D). It's loaded only by a `?demo` check at the end of `index.html` and is not deployed. Keys and settings are at the top of the file.
 
 ## Content workflow
 

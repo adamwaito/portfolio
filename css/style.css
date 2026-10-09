@@ -22,13 +22,16 @@
   --gray:   #aeada9;
   --gray-dark: #8a8985;
 
+  
   --mainfont: 'lexia-mono-variable'; /* main typeface: change this to try other fonts */
+
   --font: var(--mainfont), Arial, sans-serif;
   --font-retro: 'Win31 System', 'MS Sans Serif', Tahoma, Arial, sans-serif; /* retro UI chrome */
 
   --container: 1800px;
 }
-
+/*  --mainfont: 'lexia-mono-variable'; /* main typeface: change this to try other fonts */
+/*'vesterbro-sans-vf'*/
 /* --mainfont: 'adapter-mono-pe-variable'; */
 
 * { box-sizing: border-box; }
