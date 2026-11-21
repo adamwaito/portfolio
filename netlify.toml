@@ -5,7 +5,7 @@
   publish = "dist"
   command = """
     rm -rf dist && mkdir -p dist/js dist/css &&
-    cp index.html projects.json galleries.json dist/ &&
+    cp index.html projects.json galleries.json favicon.ico icon.svg apple-touch-icon.png dist/ &&
     cp -R images fonts dist/ &&
     cp js/script.js dist/js/ &&
     cp css/style.css css/win31.css dist/css/ &&
